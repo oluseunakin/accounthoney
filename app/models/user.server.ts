@@ -45,7 +45,7 @@ export async function verifyLogin(
   name: User["name"],
   password: User["password"]
 ) {
-  console.log(name)
+  
   const userWithPassword = await prisma.user.findUnique({
     where: {name_password: {
       name,
