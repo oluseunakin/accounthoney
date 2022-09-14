@@ -202,4 +202,4 @@ jobs:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }
         
       - name: 🛠 Setup Database
-        run: npx prisma migrate reset --force
+        run: npx prisma migrate deploy
