@@ -14,7 +14,7 @@ source = "data"
 destination = "/data"
 
 [deploy]
-  release_command = "npx prisma db push"
+  release_command = "npm prisma migrate deploy"
 
 [[services]]
 internal_port = 8_080
