@@ -13,6 +13,9 @@ entrypoint = "sh"
 source = "data"
 destination = "/data"
 
+[deploy]
+  release_command = "npx prisma migrate deploy"
+
 [[services]]
 internal_port = 8_080
 processes = [ "app" ]

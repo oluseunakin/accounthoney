@@ -199,7 +199,5 @@ jobs:
         with:
           args: "deploy --image registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}"
         env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-        
-      - run: npx prisma migrate deploy
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }
         
