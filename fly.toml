@@ -11,6 +11,9 @@ processes = []
   cmd = "start.sh"
   entrypoint = "sh"
 
+[deploy]
+  release_command = npm run prisma/seed.ts
+
 [mounts]
   destination = "/data"
   source = "data"

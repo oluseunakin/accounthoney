@@ -62,6 +62,7 @@ export async function verifyLogin(
 }
 
 export async function createAnonymousUser() {
+  
   return await prisma.user.findUnique({where: {
     name_password: {
       name: "Guest",
