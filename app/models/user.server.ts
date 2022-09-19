@@ -12,8 +12,12 @@ export async function getUserById(id: User["id"]) {
   return await prisma.user.findUnique({ where: { name } });
 } */
 
-export async function createUser(name: User["name"], password: string, type: User["type"]) {
-  if(type === "customer") {
+export async function createUser(
+  name: User["name"],
+  password: string,
+  type: User["type"]
+) {
+  if (type === "customer") {
     return prisma.user.create({
       data: {
         name,
@@ -21,13 +25,13 @@ export async function createUser(name: User["name"], password: string, type: Use
         password,
         customer: {
           create: {
-            name: Buffer.from(name, "ascii").toString()
-          }
-        }
-      }
-    })
+            name: Buffer.from(name, "ascii").toString(),
+          },
+        },
+      },
+    });
   }
-  
+
   return prisma.user.create({
     data: {
       name,
@@ -45,32 +49,43 @@ export async function verifyLogin(
   name: User["name"],
   password: User["password"]
 ) {
-  
   const userWithPassword = await prisma.user.findUnique({
-    where: {name_password: {
-      name,
-      password
-    }},
+    where: {
+      name_password: {
+        name,
+        password,
+      },
+    },
   });
 
-  if (!userWithPassword || typeof userWithPassword.password !== 'string') {
+  if (!userWithPassword || typeof userWithPassword.password !== "string") {
     return null;
   }
 
-  const { password: _password, ...userWithoutPassword } = userWithPassword
+  const { password: _password, ...userWithoutPassword } = userWithPassword;
   return userWithoutPassword;
 }
 
 export async function createAnonymousUser() {
-  
-  return await prisma.user.findUnique({where: {
-    name_password: {
-      name: "Guest",
-      password: "guest"
-    }
-  }})
+  try {
+    return await prisma.user.create({
+      data: {
+        name: "Guest",
+        password: "guest",
+      },
+    });
+  } catch (e) {
+    return await prisma.user.findUnique({
+      where: {
+        name_password: {
+          name: "Guest",
+          password: "guest",
+        },
+      },
+    });
+  }
 }
 
 export async function getAllUsers() {
-  return await prisma.user.findMany()
+  return await prisma.user.findMany();
 }
