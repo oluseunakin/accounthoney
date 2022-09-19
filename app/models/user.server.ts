@@ -56,6 +56,7 @@ export async function verifyLogin(
   if (!userWithPassword || typeof userWithPassword.password !== 'string') {
     return null;
   }
+
   const { password: _password, ...userWithoutPassword } = userWithPassword
   return userWithoutPassword;
 }
@@ -63,7 +64,7 @@ export async function verifyLogin(
 export async function createAnonymousUser() {
   return await prisma.user.findUnique({where: {
     name_password: {
-      name: "guest",
+      name: "Guest",
       password: "guest"
     }
   }})
