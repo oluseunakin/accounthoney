@@ -48,7 +48,6 @@ jobs:
 
       - name: 🔎 Type check
         run: npm run typecheck --if-present
-
   vitest:
     name: ⚡ Vitest
     runs-on: ubuntu-latest
