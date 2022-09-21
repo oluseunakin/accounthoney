@@ -8,7 +8,7 @@ on:
 
 env:
   TAG: : ${{ github.ref_name }}
-  PROJECT_NAME: MINE
+  PROJECT_NAME: mine
 
 jobs:
   lint:
