@@ -6,6 +6,10 @@ on:
       - dev
   pull_request: {}
 
+env:
+  TAG: : ${{ github.ref_name }}
+  PROJECT_NAME: MINE
+
 jobs:
   lint:
     name: ⬣ ESLint
