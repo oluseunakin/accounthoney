@@ -79,6 +79,9 @@ jobs:
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
+      - name: Cache folder content
+          run: |
+            tree -f -pug -h -D /tmp/.buildx-cache
 
       - name: 🔑 Fly Registry Auth
         uses: docker/login-action@v1
