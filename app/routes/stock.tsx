@@ -18,7 +18,7 @@ export default function Stockk() {
         </div>
       </div>
       <div className="flex justify-center">
-        <div className="md:w-2/5">
+        <div className="">
         <Outlet /></div>
       </div>
     </div>
