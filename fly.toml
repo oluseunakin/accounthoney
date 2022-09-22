@@ -1,6 +1,6 @@
 # fly.toml file generated for honeyhero on 2022-09-14T18:47:18+01:00
 
-app = "honeyhero"
+app = "accountingapp"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
