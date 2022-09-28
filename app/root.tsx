@@ -13,7 +13,7 @@ import { useState } from "react";
 import type { User } from "./models/user.server";
 
 import tailwindStylesheetUrl from "./styles/tailwind.css";
-import mycss from "./styles/media.css"
+import mycss from "./styles/media.css";
 import { convertDate } from "./utils";
 
 export const Context = React.createContext({
@@ -28,7 +28,10 @@ export const Context = React.createContext({
 });
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: tailwindStylesheetUrl }, {rel: "stylesheet", href: mycss}];
+  return [
+    { rel: "stylesheet", href: tailwindStylesheetUrl },
+    { rel: "stylesheet", href: mycss },
+  ];
 };
 
 export const meta: MetaFunction = () => ({
@@ -81,7 +84,7 @@ export default function App() {
         <Links />
       </head>
       <Context.Provider value={state}>
-        <body className="h-full space-y-2 text-lg max-w-screen-2xl">
+        <body className="h-full max-w-screen-2xl space-y-2 text-lg">
           <div className="columns-1 space-y-1 p-3 lg:columns-2">
             <div className="flex justify-center text-3xl font-bold text-blue-700 hover:underline ">
               <div>
@@ -116,30 +119,29 @@ export default function App() {
               </div>
             </div>
           </div>
-          <div className="space-x-3 p-3 ">
-            <div className="lg:flex ">
-              <div className="flex justify-center lg:flex-none ">
-                <div className="space-y-2 text-blue-800">
-                  <div className="flex justify-center">
-                    <Link to="/order" className="hover:underline">
-                      Order
-                    </Link>
-                  </div>
-                  <div className="flex justify-center">
-                    <Link to="/products" className="hover:underline">
-                      Products
-                    </Link>
-                  </div>
-                  <div className="flex justify-center">
-                    <Link to="/about" className="hover:underline">
-                      About
-                    </Link>
-                  </div>
+
+          <div className="space-x-3 p-3 lg:flex ">
+            <div className="flex justify-center lg:flex-none ">
+              <div className="space-y-2 text-blue-800">
+                <div className="flex justify-center">
+                  <Link to="/order" className="hover:underline">
+                    Order
+                  </Link>
+                </div>
+                <div className="flex justify-center">
+                  <Link to="/products" className="hover:underline">
+                    Products
+                  </Link>
+                </div>
+                <div className="flex justify-center">
+                  <Link to="/about" className="hover:underline">
+                    About
+                  </Link>
                 </div>
               </div>
-              <div className="mt-2 flex-grow">
-                <Outlet />
-              </div>
+            </div>
+            <div className="flex-grow">
+              <Outlet />
             </div>
           </div>
           <ScrollRestoration />

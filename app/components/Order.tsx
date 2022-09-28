@@ -17,7 +17,7 @@ export const OrderComponent = (prop: {
         </div>
         <ProductComp products={order.orderedProducts} />
       </div>
-      <div className="flex justify-end">
+      <div className="flex justify-end px-3">
         <button
           type="button"
           onClick={(e) => window.print()}

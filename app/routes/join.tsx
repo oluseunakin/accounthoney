@@ -68,8 +68,8 @@ export default function Join() {
   }, [actionData]);
 
   return (
-    <div className="flex justify-center">
-      <Form method="post" className="space-y-6 md:w-2/5">
+    <div className="lg:flex lg:justify-center">
+      <Form method="post" className="space-y-6 lg:w-2/5">
         <div>
           <label
             htmlFor="name"
@@ -120,37 +120,48 @@ export default function Join() {
             )}
           </div>
         </div>
-        <div className="space-x-4">
-          <input type="radio" id="admin" name="type" value="admin" required />
-          <label htmlFor="admin">Admin</label>
-          <input
-            type="radio"
-            id="customer"
-            name="type"
-            value="customer"
-            required
-          />
-          <label htmlFor="customer">Customer</label>
-        </div>
-        <input type="hidden" name="redirectTo" value={redirectTo} />
-        <button
-          type="submit"
-          className="w-full rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
-        >
-          Create Account
-        </button>
-        <div className="flex items-center justify-center">
-          <div className="text-center text-sm text-gray-500">
-            Already have an account?{" "}
-            <Link
-              className="text-blue-500 underline"
-              to={{
-                pathname: "/login",
-                search: searchParams.toString(),
-              }}
-            >
-              Log in
-            </Link>
+        <div className="flex justify-center">
+          <div className="space-y-3">
+            <div className="space-x-4">
+              <input
+                type="radio"
+                id="admin"
+                name="type"
+                value="admin"
+                required
+              />
+              <label htmlFor="admin">Admin</label>
+              <input
+                type="radio"
+                id="customer"
+                name="type"
+                value="customer"
+                required
+              />
+              <label htmlFor="customer">Customer</label>
+            </div>
+            <input type="hidden" name="redirectTo" value={redirectTo} />
+            <div className="flex justify-center">
+              <button
+                type="submit"
+                className="rounded bg-red-500 py-2 px-4 text-white hover:bg-red-600 focus:bg-red-400"
+              >
+                Create Account
+              </button>
+            </div>
+
+            <div className="text-center text-sm text-gray-500">
+              Already have an account?{" "}
+              <Link
+                className="text-blue-500 underline"
+                to={{
+                  pathname: "/login",
+                  search: searchParams.toString(),
+                }}
+              >
+                Log in
+              </Link>
+            </div>
           </div>
         </div>
       </Form>

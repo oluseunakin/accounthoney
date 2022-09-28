@@ -2,16 +2,14 @@ import type { LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { getUser } from "~/session.server";
 import { Link, useCatch, useLoaderData } from "@remix-run/react";
-import { getAllStocks, getStockForTheDay } from "~/models/stock.server";
-import { convertDate, fileProducts, getYesterday } from "~/utils";
+import { getStockForTheDay } from "~/models/stock.server";
+import { convertDate, fileProducts } from "~/utils";
 import type { Category } from "~/models/category.server";
 import { getCategory } from "~/models/category.server";
-import { getAllProducts, Product } from "~/models/products.server";
+import type { Product } from "~/models/products.server";
 import { useContext, useEffect } from "react";
 import { StockComp } from "~/components/Stock";
 import { Context } from "~/root";
-import { getAllOrders } from "~/models/order.server";
-import { getAllCustomers } from "~/models/customer.server";
 
 export type LoaderData = {
   user?: Awaited<ReturnType<typeof getUser>>;
@@ -77,7 +75,7 @@ export default function Index() {
       {user?.type === "admin" && (
         <div className="flex justify-center lg:justify-end">
           <div className="space-y-3 lg:flex lg:space-x-4 lg:space-y-0">
-            <div className="flex space-x-5 text-blue-800">
+            <div className="flex space-x-5 text-blue-800 justify-center">
               <div>
                 <Link to="/stock" className="hover:underline">
                   Stock
@@ -101,6 +99,7 @@ export default function Index() {
                 onKeyDown={(e) => {
                   if (e.key == "Enter") {
                     const name = e.currentTarget.value;
+                    fetch(new URL(`/customer/${name}`))
                   }
                 }}
               />
@@ -108,7 +107,7 @@ export default function Index() {
           </div>
         </div>
       )}
-      <div className="flex justify-center">
+      <div className="lg:flex lg:justify-center p-2">
         <StockComp />
       </div>
     </div>

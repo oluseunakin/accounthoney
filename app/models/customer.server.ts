@@ -15,3 +15,7 @@ export const createOrGetCustomer  = async (name: string) => {
 export const getAllCustomers = async () => {
     return await customerSchema.findMany({include: {order: {include: {orderedProducts: true}}}})
 }
+
+export const getCustomer = async (name: string) => {
+    return await customerSchema.findUnique({where : {name}})
+}

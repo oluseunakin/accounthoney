@@ -65,8 +65,8 @@ export default function LoginPage() {
   }, [actionData]);
 
   return (
-    <div className="flex justify-center">
-      <Form method="post" className="space-y-6 md:w-2/5">
+    <div className="lg:flex lg:justify-center">
+      <Form method="post" className="space-y-6 lg:w-2/5">
         <div>
           <label
             htmlFor="name"
@@ -117,7 +117,7 @@ export default function LoginPage() {
             )}
           </div>
         </div>
-        <div className="space-x-4">
+        <div className="space-x-4 flex justify-center">
           <button
             type="submit"
             name="guest"

@@ -15,5 +15,5 @@ export default function PrintSlug() {
     const order = useLoaderData() as Order & {
         orderedProducts: OrderedProduct[]
     }
-    return <OrderComponent order={order}/>
+    return <div className="flex justify-center"><OrderComponent order={order}/></div>
 }
