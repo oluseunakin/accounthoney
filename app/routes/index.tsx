@@ -1,7 +1,7 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { getUser } from "~/session.server";
-import { Link, useCatch, useLoaderData } from "@remix-run/react";
+import { Link, useCatch, useLoaderData, useNavigate } from "@remix-run/react";
 import { getStockForTheDay } from "~/models/stock.server";
 import { convertDate, fileProducts } from "~/utils";
 import type { Category } from "~/models/category.server";
@@ -44,11 +44,7 @@ export function ErrorBoundary() {
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUser(request);
   if (!user) return redirect("/login");
-  /* const stock = await getStockForTheDay(
-    convertDate(new Date(getYesterday(Date.now())))
-  ); */
   const stock = await getStockForTheDay(convertDate(new Date()));
-  //console.log(await getAllCustomers())
   if (stock) {
     const { products } = stock;
     const categories = (await Promise.all(
@@ -65,6 +61,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Index() {
   const context = useContext(Context);
   const { sorted, stock, user } = useLoaderData<LoaderData>();
+  //const searchRef = useRef() as React.RefObject<HTMLAnchorElement> 
+  const search = useNavigate()
   useEffect(() => {
     context.getUser(JSON.stringify(user));
     context.getSorted(JSON.stringify(sorted));
@@ -99,7 +97,8 @@ export default function Index() {
                 onKeyDown={(e) => {
                   if (e.key == "Enter") {
                     const name = e.currentTarget.value;
-                    fetch(new URL(`/customer/${name}`))
+                    const to = `/customer/${name}`
+                    search(to)
                   }
                 }}
               />

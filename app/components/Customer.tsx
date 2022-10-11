@@ -1,11 +1,11 @@
 import type { Customer } from "~/models/customer.server";
 import type { Order } from "~/models/order.server";
-import type { OrderedProduct } from "./Products";
+import type { COrderedProduct } from "./Products";
 import { ProductComp } from "./Products";
 
 export function CustomerComp(prop: {
   customers: (Customer & {
-    order: (Order & { orderedProducts: OrderedProduct[] })[];
+    order: (Order & { orderedProducts: COrderedProduct[] })[];
   })[];
 }) {
   const { customers } = prop;

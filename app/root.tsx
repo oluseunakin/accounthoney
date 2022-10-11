@@ -84,7 +84,7 @@ export default function App() {
         <Links />
       </head>
       <Context.Provider value={state}>
-        <body className="h-full max-w-screen-2xl space-y-2 text-lg">
+        <body className="h-full space-y-2 text-lg">
           <div className="columns-1 space-y-1 p-3 lg:columns-2">
             <div className="flex justify-center text-3xl font-bold text-blue-700 hover:underline ">
               <div>

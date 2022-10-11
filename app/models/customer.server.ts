@@ -17,5 +17,5 @@ export const getAllCustomers = async () => {
 }
 
 export const getCustomer = async (name: string) => {
-    return await customerSchema.findUnique({where : {name}})
+    return await customerSchema.findUnique({where : {name}, include: {order: {include: {orderedProducts: true}}}})
 }

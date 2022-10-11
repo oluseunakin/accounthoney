@@ -3,7 +3,7 @@ import { Link, useSubmit } from "@remix-run/react";
 import type { ActionFunction } from "@remix-run/server-runtime";
 import { redirect } from "@remix-run/server-runtime";
 import { useContext, useState } from "react";
-import type { OrderedProduct } from "~/components/Products";
+import type { COrderedProduct } from "~/components/Products";
 import { ProductComp } from "~/components/Products";
 import { ProductComponent } from "~/components/Products";
 import { createOrder } from "~/models/order.server";
@@ -13,10 +13,10 @@ export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
   const cart = form.get("cart");
   const userId = form.get("userId") as string;
-  const orders = JSON.parse(cart as any) as OrderedProduct[];
+  const orders = JSON.parse(cart as any) as COrderedProduct[];
   try {
     const order = await createOrder(orders, userId);
-    return redirect("/order/print/" + order.id);
+    return redirect("/order/print/" + order);
   } catch (e) {
     throw new Error();
   }
@@ -37,7 +37,7 @@ export default function Index() {
     if (stockk) stock = JSON.parse(stockk);
   }
   const [name, setName] = useState("");
-  const [cart, addToCart] = useState<OrderedProduct[]>([]);
+  const [cart, addToCart] = useState<COrderedProduct[]>([]);
   const [error, setError] = useState("");
   const [orderMade, isOrderMade] = useState(false);
   const submit = useSubmit();
@@ -48,7 +48,7 @@ export default function Index() {
   let render;
   if (!user)
     render = (
-      <div className="flex justify-center space-x-3">
+      <div className="lg:flex lg:justify-center space-x-3">
         <Link to="/join" className="text-blue-800 hover:underline">
           Sign Up
         </Link>{" "}
@@ -61,7 +61,7 @@ export default function Index() {
     );
   else if (stock)
     render = (
-      <div className="lg:flex lg:justify-center">
+      <div className="lg:flex lg:justify-center mt-7">
         <div className="space-y-4 lg:w-2/5">
           <div className="flex justify-center">
             <h1 className="text-2xl">Make your order</h1>
@@ -105,10 +105,10 @@ export default function Index() {
         </div>
       </div>
     );
-  else render = <div>No products in Stock</div>;
+  else render = <div className="lg:flex lg:justify-center">No products in Stock</div>;
   if (orderMade)
     render = (
-      <div className="flex justify-center">
+      <div className="lg:flex lg:justify-center mt-7">
         <div className="space-y-4 lg:w-2/5">
           <div className="flex justify-center font-bold">
             <div>Confirm Order</div>

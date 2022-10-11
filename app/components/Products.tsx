@@ -4,7 +4,7 @@ import type { Product } from "~/models/products.server";
 import { Context } from "~/root";
 import type { PCategory } from "~/routes";
 
-export type OrderedProduct = {
+export type COrderedProduct = {
   name: string;
   quantity: number;
   id: number;
@@ -123,7 +123,7 @@ export function NewProduct(prop: {
               isNewProduct(false);
               if (setUpdate) {
                 setUpdate!(false);
-                setProduct()
+                setProduct();
               }
               addToStock(addToStockk(stock, product!));
             }}
@@ -139,8 +139,8 @@ export function NewProduct(prop: {
 
 export function ProductComponent(prop: {
   products: Product[];
-  addToCart: (cart: OrderedProduct[]) => void;
-  cart: OrderedProduct[];
+  addToCart: (cart: COrderedProduct[]) => void;
+  cart: COrderedProduct[];
   setError: (oldState: string) => void;
 }) {
   const user = JSON.parse(useContext(Context).data.user) as User;
@@ -235,7 +235,7 @@ export function ProductComponent(prop: {
               let permanent = false;
               if (priceChanged) {
                 permanent = confirm(
-                  "Is this price change one-off or permanent?"
+                  "Is this price change one-off or permanent?\n Press Ok if Permanent, Cancel if one-off"
                 );
               }
               setError("");
@@ -280,7 +280,6 @@ export const SelectProduct = (prop: {
           isNewProduct(true);
         } else {
           const selected = JSON.parse(e.target.value) as Product;
-
           setProduct(selected);
         }
       }}
@@ -298,29 +297,19 @@ export const SelectProduct = (prop: {
 };
 
 export const ProductComp = (prop: {
-  products: (Product | OrderedProduct)[];
+  products: (Product | COrderedProduct)[];
 }) => {
   const { products } = prop;
   return (
-    <table className="space-y-3" cellPadding={5}>
-      <thead>
-        <tr>
-          <th className="px-5">Product Name</th>
-          <th className="px-5">Quantity</th>
-          <th className="px-5">Price</th>
-          <th className="px-5">Value</th>
+    <tbody>
+      {products.map((product, i) => (
+        <tr key={i}>
+          <td className="px-5">{product.name}</td>
+          <td className="px-5">{product.quantity}</td>
+          <td className="px-5">{product.price}</td>
+          <td className="px-5">{product.price * product.quantity}</td>
         </tr>
-      </thead>
-      <tbody>
-        {products.map((product, i) => (
-          <tr key={i} >
-            <td className="px-5">{product.name}</td>
-            <td className="px-5">{product.quantity}</td>
-            <td className="px-5">{product.price}</td>
-            <td className="px-5">{product.price * product.quantity}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+      ))}
+    </tbody>
   );
 };

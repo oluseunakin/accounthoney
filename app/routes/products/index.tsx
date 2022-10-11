@@ -12,5 +12,17 @@ export const loader: LoaderFunction = async () => {
 
 export default function Index() {
   const allProducts = useLoaderData<Product[]>();
-  return <ProductComp products={allProducts} />;
+  return (
+    <table className="space-y-3" cellPadding={5}>
+      <thead>
+        <tr>
+          <th className="px-5">Product Name</th>
+          <th className="px-5">Quantity</th>
+          <th className="px-5">Price</th>
+          <th className="px-5">Value</th>
+        </tr>
+      </thead>
+      <ProductComp products={allProducts} />
+    </table>
+  );
 }

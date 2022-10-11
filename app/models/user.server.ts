@@ -68,14 +68,12 @@ export async function verifyLogin(
 
 export async function createAnonymousUser() {
   try {
-
     const guest = await prisma.user.create({
       data: {
         name: "Guest",
         password: "guest",
       },
     });
-    console.log(guest)
     return guest
   } catch (e) {
     return await prisma.user.findUnique({

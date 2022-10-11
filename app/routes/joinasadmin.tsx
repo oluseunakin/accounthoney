@@ -35,7 +35,7 @@ export const action: ActionFunction = async ({ request }) => {
     );
   }
 
-  const user = await createUser(name, password, "customer");
+  const user = await createUser(name, password, "admin");
 
   return createUserSession({
     request,
@@ -120,7 +120,7 @@ export default function Join() {
           </div>
         </div>
         <div className="flex justify-center">
-          <div className="space-y-3">
+          <div className="space-y-3"> 
             <input type="hidden" name="redirectTo" value={redirectTo} />
             <div className="flex justify-center">
               <button
@@ -130,6 +130,7 @@ export default function Join() {
                 Create Account
               </button>
             </div>
+
             <div className="text-center text-sm text-gray-500">
               Already have an account?{" "}
               <Link

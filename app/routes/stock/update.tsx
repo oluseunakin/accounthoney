@@ -62,7 +62,7 @@ export default function UpdateStock() {
   ]);
 
   return (
-    <div className="flex justify-center">
+    <div className="p-3 lg:flex lg:justify-center">
       <div className="space-y-4 lg:w-2/5">
         <div>
           <Link to="/stock/" className="text-blue-700 hover:underline">
@@ -96,7 +96,17 @@ export default function UpdateStock() {
               </div>
               {product?.name && (
                 <div>
-                  <ProductComp products={[product]} />
+                  <table className="space-y-3" cellPadding={5}>
+                    <thead>
+                      <tr>
+                        <th className="px-5">Product Name</th>
+                        <th className="px-5">Quantity</th>
+                        <th className="px-5">Price</th>
+                        <th className="px-5">Value</th>
+                      </tr>
+                    </thead>
+                    <ProductComp products={[product]} />
+                  </table>
                   {update && (
                     <>
                       <div>
@@ -156,7 +166,17 @@ export default function UpdateStock() {
               </button>
               {added && (
                 <div className="text-sm ">
-                  <ProductComp products={[...prod, ...ns]} />
+                  <table className="space-y-3" cellPadding={5}>
+                    <thead>
+                      <tr>
+                        <th className="px-5">Product Name</th>
+                        <th className="px-5">Quantity</th>
+                        <th className="px-5">Price</th>
+                        <th className="px-5">Value</th>
+                      </tr>
+                    </thead>
+                    <ProductComp products={[...prod, ...ns]} />
+                  </table>
                 </div>
               )}
             </div>

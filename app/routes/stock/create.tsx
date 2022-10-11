@@ -49,7 +49,7 @@ export default function StockHome() {
   const [product, setProduct] = useState<Product>();
 
   return (
-    <div className="flex justify-center ">
+    <div className="p-3 lg:flex lg:justify-center">
       <div className="space-y-4 lg:w-2/5">
         <div>
           <Link to="/stock/" className="text-blue-700 hover:underline">
@@ -123,7 +123,17 @@ export default function StockHome() {
                     {prod!.map((p, i) => (
                       <div key={i} className="space-y-1 ">
                         <p className="flex justify-center">{p.name}</p>
-                        <ProductComp products={p.products} />
+                        <table className="space-y-3" cellPadding={5}>
+                          <thead>
+                            <tr>
+                              <th className="px-5">Product Name</th>
+                              <th className="px-5">Quantity</th>
+                              <th className="px-5">Price</th>
+                              <th className="px-5">Value</th>
+                            </tr>
+                          </thead>
+                          <ProductComp products={p.products} />
+                        </table>
                       </div>
                     ))}
                   </div>

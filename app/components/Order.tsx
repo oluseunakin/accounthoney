@@ -1,5 +1,5 @@
+import type { OrderedProduct } from "@prisma/client";
 import type { Order } from "~/models/order.server";
-import type { OrderedProduct } from "./Products";
 import { ProductComp } from "./Products";
 
 export const OrderComponent = (prop: {
@@ -9,13 +9,23 @@ export const OrderComponent = (prop: {
 }) => {
   const { order } = prop;
   return (
-    <div className="space-y-6">
-      <div id="print">
+    <div className="space-y-10">
+      <div id="print" className="space-y-6">
         <div className="grid justify-items-center">
-          <h1>{order.customerName}</h1>
+          <h1 className=" mb-3 text-2xl font-semibold">{order.customerName}</h1>
           <p>{order.date}</p>
         </div>
-        <ProductComp products={order.orderedProducts} />
+        <table>
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <ProductComp products={order.orderedProducts} />
+        </table>
       </div>
       <div className="flex justify-end px-3">
         <button

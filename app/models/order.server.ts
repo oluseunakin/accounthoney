@@ -30,7 +30,7 @@ export const createOrder = async (orders: OrderedProduct[], name: string) => {
         await updatePrice(order.price, product.id);
       await updateQuantity(remainingQuantity, product.id);
     });
-    return await orderSchema.create({
+    const order = await orderSchema.create({
       data: {
         orderedProducts: {
           create: transformOrder(orders),
@@ -61,6 +61,7 @@ export const createOrder = async (orders: OrderedProduct[], name: string) => {
         date: convertDate(new Date()),
       },
     });
+    return order.id
   } catch (e) {
     console.log("in server");
     throw new Error();
