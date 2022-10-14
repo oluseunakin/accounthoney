@@ -3,7 +3,7 @@ import { json, redirect } from "@remix-run/node";
 import { getUser } from "~/session.server";
 import { Link, useCatch, useLoaderData, useNavigate } from "@remix-run/react";
 import { getStockForTheDay } from "~/models/stock.server";
-import { convertDate, fileProducts } from "~/utils";
+import { fileProducts } from "~/utils";
 import type { Category } from "~/models/category.server";
 import { getCategory } from "~/models/category.server";
 import type { Product } from "~/models/products.server";
@@ -36,7 +36,7 @@ export function CatchBoundary() {
 export function ErrorBoundary() {
   return (
     <div className="flex justify-center">
-      <div className="w-2/5">Error has occured</div>
+      <div className="lg:w-3/5">Error has occured</div>
     </div>
   );
 }
@@ -44,7 +44,7 @@ export function ErrorBoundary() {
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUser(request);
   if (!user) return redirect("/login");
-  const stock = await getStockForTheDay(convertDate(new Date()));
+  const stock = await getStockForTheDay();
   if (stock) {
     const { products } = stock;
     const categories = (await Promise.all(
@@ -61,7 +61,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Index() {
   const context = useContext(Context);
   const { sorted, stock, user } = useLoaderData<LoaderData>();
-  //const searchRef = useRef() as React.RefObject<HTMLAnchorElement> 
   const search = useNavigate()
   useEffect(() => {
     context.getUser(JSON.stringify(user));
@@ -93,6 +92,7 @@ export default function Index() {
             <div>
               <input
                 placeholder="Search for Customer"
+                type="search"
                 className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
                 onKeyDown={(e) => {
                   if (e.key == "Enter") {

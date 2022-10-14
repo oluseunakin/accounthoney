@@ -1,26 +1,13 @@
-import {
-  Form,
-  Link,
-  useActionData,
-  useLoaderData,
-  useSubmit,
-} from "@remix-run/react";
-import type { ActionFunction, LoaderFunction } from "@remix-run/server-runtime";
-import { json } from "@remix-run/server-runtime";
+import { Form, Link, useActionData, useSubmit } from "@remix-run/react";
+import type { ActionFunction } from "@remix-run/server-runtime";
 import { redirect } from "@remix-run/server-runtime";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { NewProduct, ProductComp, SelectProduct } from "~/components/Products";
 import type { Product } from "~/models/products.server";
-import { getAllProducts } from "~/models/products.server";
-import { getStockId, updateStock } from "~/models/stock.server";
+import type { Stock } from "~/models/stock.server";
+import { updateStock } from "~/models/stock.server";
+import { Context } from "~/root";
 import type { AuditResponse, PCategory } from "~/routes";
-import { convertDate } from "~/utils";
-
-export const loader: LoaderFunction = async () => {
-  const products = await getAllProducts();
-  const stockId = await getStockId(convertDate(new Date()));
-  return json({ products, stockId });
-};
 
 export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
@@ -30,7 +17,7 @@ export const action: ActionFunction = async ({ request }) => {
   const newProducts = JSON.parse(newProd as any) as Product[];
   const stockId = Number(form.get("stockId"));
   try {
-    updateStock(newProducts, oldProducts, stockId);
+    await updateStock(newProducts, oldProducts, stockId);
     return redirect("/");
   } catch (e) {
     throw new Error();
@@ -39,27 +26,19 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function UpdateStock() {
   const submit = useSubmit();
-  const { products, stockId } = useLoaderData<{
-    products: Product[];
-    stockId: { id: number };
-  }>();
+  const context = useContext(Context);
+  const stock: Stock & { products: Product[] } = JSON.parse(context.data.stock);
   const actionData = useActionData<AuditResponse>();
-  if (actionData) var { error, message } = actionData;
+  if (actionData) var { error } = actionData;
   const f = useRef<HTMLFormElement>(null);
-  const [newProduct, isNewProduct] = useState(false);
   const [newQuantity, setNewQuantity] = useState(0);
   const [newPrice, setNewPrice] = useState(0);
   const [prod, oldStock] = useState<Product[]>([]);
   const [ns, newStock] = useState<Product[]>([]);
   const [added, isAdded] = useState(false);
-  const [update, setUpdate] = useState(true);
+  const [state, setState] = useState("");
   const [product, setProduct] = useState<Product>();
-  const [nprod, addToStock] = useState<PCategory[]>([
-    {
-      name: "",
-      products: [],
-    },
-  ]);
+  const [nprod, addToStock] = useState<PCategory[]>([]);
 
   return (
     <div className="p-3 lg:flex lg:justify-center">
@@ -70,14 +49,14 @@ export default function UpdateStock() {
           </Link>
           <h1 className="flex justify-center text-2xl">Update Stock</h1>
         </div>
-        {newProduct ? (
+        {state === "new" ? (
           <NewProduct
-            setUpdate={setUpdate}
+            isAdded={undefined}
             stock={nprod}
             addToStock={addToStock}
             setProduct={setProduct}
             product={product}
-            isNewProduct={isNewProduct}
+            setState={setState}
           />
         ) : (
           <Form method="post" ref={f} className="space-y-4">
@@ -87,27 +66,17 @@ export default function UpdateStock() {
                 <div className="mt-1">
                   <SelectProduct
                     message="Add a New Product"
-                    isNewProduct={isNewProduct}
+                    setState={setState}
                     product={product}
                     setProduct={setProduct}
-                    products={products}
+                    products={stock.products}
                   />
                 </div>
               </div>
-              {product?.name && (
+              {product && (
                 <div>
-                  <table className="space-y-3" cellPadding={5}>
-                    <thead>
-                      <tr>
-                        <th className="px-5">Product Name</th>
-                        <th className="px-5">Quantity</th>
-                        <th className="px-5">Price</th>
-                        <th className="px-5">Value</th>
-                      </tr>
-                    </thead>
-                    <ProductComp products={[product]} />
-                  </table>
-                  {update && (
+                  <ProductComp products={[product!]} />
+                  {state === "update" && (
                     <>
                       <div>
                         <label htmlFor="quantity">New quantity</label>
@@ -153,9 +122,9 @@ export default function UpdateStock() {
                 className="rounded bg-zinc-800 py-2 px-4 text-white hover:bg-zinc-600 focus:bg-zinc-900"
                 type="button"
                 onClick={(e) => {
-                  if (product?.categoryName === "") {
+                  if (nprod.length > 0) {
                     const products = nprod.map((p) => p.products).flat();
-                    isNewProduct(false);
+                    setState("");
                     newStock(products);
                   } else oldStock([...prod, product!]);
                   isAdded(true);
@@ -164,21 +133,7 @@ export default function UpdateStock() {
               >
                 Add to Stock
               </button>
-              {added && (
-                <div className="text-sm ">
-                  <table className="space-y-3" cellPadding={5}>
-                    <thead>
-                      <tr>
-                        <th className="px-5">Product Name</th>
-                        <th className="px-5">Quantity</th>
-                        <th className="px-5">Price</th>
-                        <th className="px-5">Value</th>
-                      </tr>
-                    </thead>
-                    <ProductComp products={[...prod, ...ns]} />
-                  </table>
-                </div>
-              )}
+              {added && <ProductComp products={[...prod, ...ns]} />}
             </div>
             <div className="grid justify-items-center ">
               <button
@@ -192,7 +147,7 @@ export default function UpdateStock() {
                   if (ns) {
                     formdata.set("ns", JSON.stringify(ns));
                   }
-                  formdata.set("stockId", stockId.id.toString());
+                  formdata.set("stockId", stock.id.toString());
                   submit(formdata, { method: "post" });
                   e.preventDefault();
                 }}

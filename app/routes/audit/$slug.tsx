@@ -31,7 +31,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 export default function AuditSlug() {
   const { audit } = useLoaderData<{ audit: string[] }>();
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 lg:w-3/5">
       <div>
         <Link to="/audit" className="text-blue-700 hover:underline">Back</Link>
       </div>

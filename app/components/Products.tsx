@@ -1,4 +1,4 @@
-import type { User } from "@prisma/client";
+import type { OrderedProduct, User } from "@prisma/client";
 import { useContext, useState } from "react";
 import type { Product } from "~/models/products.server";
 import { Context } from "~/root";
@@ -46,13 +46,13 @@ export function addToStockk(oldstock: PCategory[], product: Product) {
 
 export function NewProduct(prop: {
   setProduct: (product?: Product) => void;
-  setUpdate: ((update: boolean) => void) | undefined;
   product: Product | undefined;
-  isNewProduct: (newProduct: boolean) => void;
+  setState: (state: string) => void;
   addToStock: (stock: PCategory[]) => void;
   stock: PCategory[];
+  isAdded?: (added: boolean) => void
 }) {
-  const { setProduct, product, isNewProduct, addToStock, stock, setUpdate } =
+  const { setProduct, product, addToStock, stock, setState, isAdded } =
     prop;
   return (
     <div className="space-y-4">
@@ -120,12 +120,10 @@ export function NewProduct(prop: {
         <div>
           <button
             onClick={(e) => {
-              isNewProduct(false);
-              if (setUpdate) {
-                setUpdate!(false);
-                setProduct();
-              }
+              if(isAdded) isAdded(true)
+              setState("")
               addToStock(addToStockk(stock, product!));
+              
             }}
             className="rounded bg-stone-800 py-2 px-4 text-white hover:bg-stone-700 focus:bg-stone-700"
           >
@@ -263,32 +261,32 @@ export function ProductComponent(prop: {
 
 export const SelectProduct = (prop: {
   product: Product | undefined;
-  isNewProduct: (newProduct: boolean) => void;
+  setState: (state: string) => void;
   setProduct: (product: Product) => void;
   products: Product[] | undefined | null;
   message: string;
 }) => {
-  const { product, isNewProduct, setProduct, products, message } = prop;
+  const { setState, setProduct, products, message } = prop;
   return (
     <select
       className="w-full rounded border border-gray-500 px-2 py-1 "
-      //value={product ? product.name : ""}
       id="prod"
       name="prod"
       onChange={async (e) => {
         if (e.target.value === "create") {
-          isNewProduct(true);
+          setState("new");
         } else {
+          setState("update")
           const selected = JSON.parse(e.target.value) as Product;
           setProduct(selected);
         }
       }}
     >
-      <option defaultValue={product ? product.name : ""}>-------------</option>
+      <option>-------------</option>
       <option value="create">{message}</option>
       {products &&
         products?.map((product) => (
-          <option value={JSON.stringify(product)} key={product.name}>
+          <option value={JSON.stringify(product)} key={product.id}>
             {product.name}
           </option>
         ))}
@@ -297,19 +295,33 @@ export const SelectProduct = (prop: {
 };
 
 export const ProductComp = (prop: {
-  products: (Product | COrderedProduct)[];
+  products: (Product | OrderedProduct | COrderedProduct)[];
 }) => {
   const { products } = prop;
   return (
-    <tbody>
-      {products.map((product, i) => (
-        <tr key={i}>
-          <td className="px-5">{product.name}</td>
-          <td className="px-5">{product.quantity}</td>
-          <td className="px-5">{product.price}</td>
-          <td className="px-5">{product.price * product.quantity}</td>
-        </tr>
-      ))}
-    </tbody>
+    <div className="lg:flex lg:justify-center">
+      <table className="lg:w-4/5">
+        <thead>
+          <tr>
+            <th className="p-1">Product Name</th>
+            <th className="p-1">Quantity</th>
+            <th className="p-1">Price</th>
+            <th className="p-1">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {products.map((product, i) => (
+            <tr key={i} >
+              <td className="p-1 text-center capitalize">{product.name}</td>
+              <td className="p-1 text-center">{product.quantity}</td>
+              <td className="p-1 text-center">{product.price}</td>
+              <td className="p-1 text-center">
+                {product.price * product.quantity}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };

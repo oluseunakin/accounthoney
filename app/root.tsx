@@ -16,6 +16,25 @@ import tailwindStylesheetUrl from "./styles/tailwind.css";
 import mycss from "./styles/media.css";
 import { convertDate } from "./utils";
 
+export function ErrorBoundary() {
+  return (
+    <html>
+      <head>
+        <title>Oh no!</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <div className=" text-2xl font-semibold grid place-content-center h-full">
+          <div>An error has occured</div>
+          <div>Reload this page</div>
+        </div>
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+
 export const Context = React.createContext({
   data: {
     user: "",
@@ -84,7 +103,7 @@ export default function App() {
         <Links />
       </head>
       <Context.Provider value={state}>
-        <body className="h-full space-y-2 text-lg">
+        <body className="h-full space-y-2 text-lg text-gray-700">
           <div className="columns-1 space-y-1 p-3 lg:columns-2">
             <div className="flex justify-center text-3xl font-bold text-blue-700 hover:underline ">
               <div>
@@ -119,8 +138,7 @@ export default function App() {
               </div>
             </div>
           </div>
-
-          <div className="space-x-3 p-3 lg:flex ">
+          <div className="p-3 lg:flex">
             <div className="flex justify-center lg:flex-none ">
               <div className="space-y-2 text-blue-800">
                 <div className="flex justify-center">
@@ -140,7 +158,7 @@ export default function App() {
                 </div>
               </div>
             </div>
-            <div className="flex-grow">
+            <div className="mt-7 flex-grow p-3">
               <Outlet />
             </div>
           </div>

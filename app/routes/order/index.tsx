@@ -61,7 +61,7 @@ export default function Index() {
     );
   else if (stock)
     render = (
-      <div className="lg:flex lg:justify-center mt-7">
+      <div className="lg:flex lg:justify-center">
         <div className="space-y-4 lg:w-2/5">
           <div className="flex justify-center">
             <h1 className="text-2xl">Make your order</h1>
@@ -89,7 +89,7 @@ export default function Index() {
               setError={setError}
             />
             {error && <p className="text-red-700">{error}</p>}
-            {cart.length !== 0 && <div className="flex justify-center"><ProductComp products={cart} /></div>}
+            {cart.length !== 0 && <ProductComp products={cart} />}
             <div className="mt-5">
               <button
                 className="w-full rounded bg-red-500 py-2 px-4 text-white hover:bg-red-400 focus:bg-red-600"
@@ -108,8 +108,8 @@ export default function Index() {
   else render = <div className="lg:flex lg:justify-center">No products in Stock</div>;
   if (orderMade)
     render = (
-      <div className="lg:flex lg:justify-center mt-7">
-        <div className="space-y-4 lg:w-2/5">
+      <div className="lg:flex lg:justify-center">
+        <div className="space-y-4 lg:w-3/5">
           <div className="flex justify-center font-bold">
             <div>Confirm Order</div>
           </div>

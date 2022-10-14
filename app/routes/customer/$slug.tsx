@@ -1,7 +1,7 @@
+import type { OrderedProduct } from "@prisma/client";
 import { useLoaderData } from "@remix-run/react";
 import type { LoaderFunction } from "@remix-run/server-runtime";
 import { json } from "@remix-run/server-runtime";
-import type { OrderedProduct } from "~/components/Products";
 import { ProductComp } from "~/components/Products";
 import type { Customer } from "~/models/customer.server";
 import { getCustomer } from "~/models/customer.server";
@@ -17,23 +17,11 @@ export default function Index() {
     Customer & { order: (Order & { orderedProducts: OrderedProduct[] })[] }
   >();
   return (
-    <div id="print">
+    <div id="print" className="border lg:w-4/5 p-2 space-y-4">
       <div className="flex justify-center">
         <h3 className="2xl font-semibold">{customer.name}</h3>
       </div>
-      <table className="space-y-3" cellPadding={5}>
-        <thead>
-          <tr>
-            <th className="px-5">Product Name</th>
-            <th className="px-5">Quantity</th>
-            <th className="px-5">Price</th>
-            <th className="px-5">Value</th>
-          </tr>
-        </thead>
-        {customer.order.map((order, i) => (
-          <ProductComp key={i} products={order.orderedProducts} />
-        ))}
-      </table>
+      <ProductComp products={(customer.order.map(cust => cust.orderedProducts).flat())} />
     </div>
   );
 }

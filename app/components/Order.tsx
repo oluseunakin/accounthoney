@@ -9,23 +9,13 @@ export const OrderComponent = (prop: {
 }) => {
   const { order } = prop;
   return (
-    <div className="space-y-10">
+    <div className="space-y-10 lg:w-3/5">
       <div id="print" className="space-y-6">
         <div className="grid justify-items-center">
           <h1 className=" mb-3 text-2xl font-semibold">{order.customerName}</h1>
           <p>{order.date}</p>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Product Name</th>
-              <th>Quantity</th>
-              <th>Price</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <ProductComp products={order.orderedProducts} />
-        </table>
+        <ProductComp products={order.orderedProducts} />
       </div>
       <div className="flex justify-end px-3">
         <button

@@ -12,18 +12,17 @@ export function StockComp() {
     sorted = JSON.parse(sort) as { [k: string]: Product[] };
 
   return (
-    <div className="space-y-4 divide-y divide-dashed">
+    <div className="space-y-4 lg:w-4/5">
       {sorted &&
         Object.entries(sorted).map((o, i) => {
           const name = o[0];
           const products = o[1];
           return (
-            <div className="space-y-5" key={i}>
+            <div className="space-y-5 border border-gray-200 p-2" key={i}>
               <div className="flex justify-center">
-                <h2 className="flex justify-self-center font-bold">{name}</h2>
+                <h2 className="flex justify-self-center font-bold uppercase">{name}</h2>
               </div>
-              <div className="flex justify-center">
-              <ProductComp products={products} /></div>
+              <ProductComp products={products} />
             </div>
           );
         })}

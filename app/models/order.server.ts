@@ -1,4 +1,3 @@
-import type { OrderedProduct } from "~/components/Products";
 import { prisma } from "~/db.server";
 import { convertDate } from "~/utils";
 import type { Product } from "./products.server";
@@ -6,12 +5,13 @@ import { updatePrice } from "./products.server";
 import { getProduct } from "./products.server";
 import { updateQuantity } from "./products.server";
 import { Buffer } from "buffer";
+import type { COrderedProduct } from "~/components/Products";
 
 const orderSchema = prisma.order;
 
 export type { Order } from "@prisma/client";
 
-const transformOrder = (orders: OrderedProduct[]) => {
+const transformOrder = (orders: COrderedProduct[]) => {
   return orders.map((order) => ({
     name: order.name,
     price: order.price,
@@ -20,13 +20,14 @@ const transformOrder = (orders: OrderedProduct[]) => {
   }));
 };
 
-export const createOrder = async (orders: OrderedProduct[], name: string) => {
+export const createOrder = async (orders: COrderedProduct[], buyer: string) => {
+  const name = buyer.toUpperCase()
   try {
     const nam = Buffer.from(name, "ascii").toString()
     orders.forEach(async (order, i) => {
       const product = (await getProduct(order.id)) as Product;
       const remainingQuantity = product.quantity - order.quantity;
-      if (product.price != order.price)
+      if (product.price != order.price && order.permanent)
         await updatePrice(order.price, product.id);
       await updateQuantity(remainingQuantity, product.id);
     });
@@ -63,7 +64,6 @@ export const createOrder = async (orders: OrderedProduct[], name: string) => {
     });
     return order.id
   } catch (e) {
-    console.log("in server");
     throw new Error();
   }
 };

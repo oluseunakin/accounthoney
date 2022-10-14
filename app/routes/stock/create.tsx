@@ -42,9 +42,9 @@ export default function StockHome() {
   const submit = useSubmit();
   const products = useLoaderData<Product[]>();
   const actionData = useActionData<AuditResponse>();
-  if (actionData) var { error, message } = actionData;
+  if (actionData) var { error } = actionData;
   const f = useRef() as any as Ref<HTMLFormElement>;
-  const [newProduct, isNewProduct] = useState(false);
+  const [state, setState] = useState("");
   const [prod, addToStock] = useState<PCategory[]>([]);
   const [product, setProduct] = useState<Product>();
 
@@ -59,14 +59,14 @@ export default function StockHome() {
             Create Stock for Today
           </h1>
         </div>
-        {newProduct ? (
+        {state === "new" ? (
           <NewProduct
-            setUpdate={undefined}
+            isAdded={() => undefined}
             stock={prod}
             addToStock={addToStock}
             setProduct={setProduct}
             product={product}
-            isNewProduct={isNewProduct}
+            setState={setState}
           />
         ) : (
           <Form method="post" ref={f} className="space-y-4">
@@ -76,7 +76,7 @@ export default function StockHome() {
                 <div className="mt-1">
                   <SelectProduct
                     message="Create a New Product"
-                    isNewProduct={isNewProduct}
+                    setState={setState}
                     product={product}
                     setProduct={setProduct}
                     products={products}
@@ -110,30 +110,18 @@ export default function StockHome() {
                   className="rounded bg-zinc-800 py-2 px-4 text-white hover:bg-zinc-600 focus:bg-zinc-900"
                   type="button"
                   onClick={(e) => {
-                    addToStock((oldstock) => {
-                      return addToStockk(oldstock, product!);
-                    });
+                    addToStock((oldstock) => addToStockk(oldstock, product!));
                     e.preventDefault();
                   }}
                 >
                   Add to Stock
                 </button>
                 {prod.length !== 0 && (
-                  <div className="text-base">
+                  <div>
                     {prod!.map((p, i) => (
                       <div key={i} className="space-y-1 ">
                         <p className="flex justify-center">{p.name}</p>
-                        <table className="space-y-3" cellPadding={5}>
-                          <thead>
-                            <tr>
-                              <th className="px-5">Product Name</th>
-                              <th className="px-5">Quantity</th>
-                              <th className="px-5">Price</th>
-                              <th className="px-5">Value</th>
-                            </tr>
-                          </thead>
-                          <ProductComp products={p.products} />
-                        </table>
+                        <ProductComp products={p.products} />
                       </div>
                     ))}
                   </div>

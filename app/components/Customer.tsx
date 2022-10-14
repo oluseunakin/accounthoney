@@ -1,20 +1,20 @@
+import type { OrderedProduct } from "@prisma/client";
 import type { Customer } from "~/models/customer.server";
 import type { Order } from "~/models/order.server";
-import type { COrderedProduct } from "./Products";
 import { ProductComp } from "./Products";
 
 export function CustomerComp(prop: {
   customers: (Customer & {
-    order: (Order & { orderedProducts: COrderedProduct[] })[];
+    order: (Order & { orderedProducts: OrderedProduct[] })[];
   })[];
 }) {
   const { customers } = prop;
   return (
-    <div>
+    <div className="space-y-4 p-2 ">
       {customers.map((customer, i) => (
-        <div key={i} id="print">
-          <div className="flex justify-center">
-            <h3 className="2xl font-semibold">{customer.name}</h3>
+        <div key={i} id="print" className="border">
+          <div className="flex justify-center mb-5">
+            <h3 className="2xl font-semibold capitalize">{customer.name}</h3>
           </div>
           {customer.order.map((order, i) => (
             <div key={i}>

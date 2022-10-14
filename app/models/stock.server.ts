@@ -32,14 +32,14 @@ export const getStockId = async (date: string) => {
   return await stockSchema.findUnique({where: {date}, select: {id: true}})
 }
 
-export const getStockForTheDay = async (date: string) => {
+export const getStockForTheDay = async () => {
   return await stockSchema.findUnique({
-    where: { date },
+    where: { date: convertDate(new Date()) },
     include: { products: true },
   });
 };
 
-export const updateStock = (
+export const updateStock = async(
   newProducts: Product[],
   oldProducts: Product[],
   stockId: number
