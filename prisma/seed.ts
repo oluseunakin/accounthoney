@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function seed() {
-  const name = "Oluseun Akin";
+  const name = "Honeyhero";
 
   // cleanup the existing database
   await prisma.user.deleteMany().catch(() => {
@@ -13,7 +13,7 @@ async function seed() {
   await prisma.user.create({
     data: {
       name,
-      password: "harkindoyin",
+      password: "honeyhero",
       type: "admin",
     },
   });

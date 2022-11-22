@@ -67,84 +67,82 @@ export default function Join() {
   }, [actionData]);
 
   return (
-    <div className="lg:flex lg:justify-center">
-      <Form method="post" className="space-y-6 lg:w-2/5">
-        <div>
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Name
-          </label>
-          <div className="mt-1">
-            <input
-              ref={nameRef}
-              id="name"
-              required
-              autoFocus={true}
-              name="name"
-              aria-invalid={actionData?.errors?.name ? true : undefined}
-              aria-describedby="name-error"
-              className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
-            />
-            {actionData?.errors?.name && (
-              <div className="pt-1 text-red-700" id="name-error">
-                {actionData.errors.name}
-              </div>
-            )}
-          </div>
-        </div>
-        <div>
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Password
-          </label>
-          <div className="mt-1">
-            <input
-              id="password"
-              ref={passwordRef}
-              name="password"
-              type="password"
-              autoComplete="new-password"
-              aria-invalid={actionData?.errors?.password ? true : undefined}
-              aria-describedby="password-error"
-              className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
-            />
-            {actionData?.errors?.password && (
-              <div className="pt-1 text-red-700" id="password-error">
-                {actionData.errors.password}
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="flex justify-center">
-          <div className="space-y-3">
-            <input type="hidden" name="redirectTo" value={redirectTo} />
-            <div className="flex justify-center">
-              <button
-                type="submit"
-                className="rounded bg-red-500 py-2 px-4 text-white hover:bg-red-600 focus:bg-red-400"
-              >
-                Create Account
-              </button>
+    <Form method="post" className="space-y-3 border bg-slate-700 opacity-70 shadow-lg shadow-slate-200 md:mx-auto p-3 lg:w-3/5 md:w-4/5 md:max-w-2xl m-2 md:my-5">
+      <div>
+        <label
+          htmlFor="name"
+          className="block text-sm font-medium"
+        >
+          Name
+        </label>
+        <div className="mt-1">
+          <input
+            ref={nameRef}
+            id="name"
+            required
+            autoFocus={true}
+            name="name"
+            aria-invalid={actionData?.errors?.name ? true : undefined}
+            aria-describedby="name-error"
+            className="w-full rounded border px-2 py-1 text-lg"
+          />
+          {actionData?.errors?.name && (
+            <div className="pt-1 text-red-700" id="name-error">
+              {actionData.errors.name}
             </div>
-            <div className="text-center text-sm text-gray-500">
-              Already have an account?{" "}
-              <Link
-                className="text-blue-500 underline"
-                to={{
-                  pathname: "/login",
-                  search: searchParams.toString(),
-                }}
-              >
-                Log in
-              </Link>
+          )}
+        </div>
+      </div>
+      <div>
+        <label
+          htmlFor="password"
+          className="block text-sm font-medium"
+        >
+          Password
+        </label>
+        <div className="mt-1">
+          <input
+            id="password"
+            ref={passwordRef}
+            name="password"
+            type="password"
+            autoComplete="new-password"
+            aria-invalid={actionData?.errors?.password ? true : undefined}
+            aria-describedby="password-error"
+            className="w-full rounded border px-2 py-1 text-lg"
+          />
+          {actionData?.errors?.password && (
+            <div className="pt-1 text-red-700" id="password-error">
+              {actionData.errors.password}
             </div>
+          )}
+        </div>
+      </div>
+      <div className="flex justify-center">
+        <div className="space-y-3">
+          <input type="hidden" name="redirectTo" value={redirectTo} />
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className="rounded bg-red-500 py-2 px-4 hover:bg-red-600 focus:bg-red-400"
+            >
+              Create Account
+            </button>
+          </div>
+          <div className="text-center text-sm">
+            Already have an account?{" "}
+            <Link
+              className="text-blue-300 underline"
+              to={{
+                pathname: "/login",
+                search: searchParams.toString(),
+              }}
+            >
+              Log in
+            </Link>
           </div>
         </div>
-      </Form>
-    </div>
+      </div>
+    </Form>
   );
 }

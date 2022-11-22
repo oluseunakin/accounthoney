@@ -29,8 +29,11 @@ export const transformStock = (products: Product[]) => {
 };
 
 export const getStockId = async (date: string) => {
-  return await stockSchema.findUnique({where: {date}, select: {id: true}})
-}
+  return await stockSchema.findUnique({
+    where: { date },
+    select: { id: true },
+  });
+};
 
 export const getStockForTheDay = async () => {
   return await stockSchema.findUnique({
@@ -39,7 +42,7 @@ export const getStockForTheDay = async () => {
   });
 };
 
-export const updateStock = async(
+export const updateStock = async (
   newProducts: Product[],
   oldProducts: Product[],
   stockId: number
@@ -57,6 +60,7 @@ export const updateStock = async(
   newProducts.forEach(async (product, i) => {
     await createProduct(product, stockId);
   });
+  return
 };
 
 export const getAllStocks = async () => {
@@ -64,8 +68,8 @@ export const getAllStocks = async () => {
 };
 
 export const getStockByDate = async (date: string) => {
-  return await stockSchema.findFirst({ where: { date }, select: { id: true } });
-}; 
+  return await stockSchema.findUnique({ where: { date }, select: { id: true } });
+};
 
 export const getStockById = async (id: number) => {
   return await stockSchema.findUnique({ where: { id } });
@@ -74,6 +78,13 @@ export const getStockById = async (id: number) => {
 export const getStockByIdWithProducts = async (id: number) => {
   return await stockSchema.findUnique({
     where: { id },
+    include: { products: true },
+  });
+};
+
+export const getStockByDateWithProducts = async (date: string) => {
+  return await stockSchema.findUnique({
+    where: { date },
     include: { products: true },
   });
 };

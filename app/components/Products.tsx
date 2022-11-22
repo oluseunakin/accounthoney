@@ -45,87 +45,90 @@ export function addToStockk(oldstock: PCategory[], product: Product) {
 }
 
 export function NewProduct(prop: {
-  setProduct: (product?: Product) => void;
   product: Product | undefined;
   setState: (state: string) => void;
   addToStock: (stock: PCategory[]) => void;
   stock: PCategory[];
-  isAdded?: (added: boolean) => void
+  isAdded?: (added: boolean) => void;
+  setProduct: (product: Product) => void
 }) {
-  const { setProduct, product, addToStock, stock, setState, isAdded } =
-    prop;
+  const { product, addToStock, stock, setState, isAdded, setProduct } = prop;
   return (
     <div className="space-y-4">
       <div>
-        <label htmlFor="name">Enter name of Product</label>
-        <div className="mt-1">
-          <input
-            id="name"
-            className="w-full rounded border border-gray-500 px-2 py-1"
-            type="text"
-            name="name"
-            value={product ? product.name : ""}
-            onChange={(e) => {
-              setProduct({ ...product!, name: e.target.value });
-            }}
-          />
-        </div>
+        <label htmlFor="name">
+          Enter name of Product
+          <div className="mt-1">
+            <input
+              id="name"
+              className="w-full rounded border bg-slate-400 px-2 py-1 text-black"
+              type="text"
+              name="name"
+              value={product ? product.name : ""}
+              onChange={(e) => {
+                product!.name = e.target.value;
+              }}
+            />
+          </div>
+        </label>
       </div>
       <div>
-        <label htmlFor="category">Category</label>
-        <div className="mt-1">
-          <input
-            id="category"
-            type="text"
-            className="w-full rounded border border-gray-500 px-2 py-1"
-            value={product ? product.categoryName : ""}
-            name="categoryName"
-            onChange={(e) => {
-              setProduct({ ...product!, categoryName: e.target.value });
-            }}
-          />
-        </div>
+        <label htmlFor="category">
+          Category
+          <div className="mt-1">
+            <input
+              id="category"
+              type="text"
+              className="w-full rounded border bg-slate-400 px-2 py-1 text-black"
+              value={product ? product.categoryName : ""}
+              name="categoryName"
+              onChange={(e) => {
+                product!.categoryName = e.target.value;
+              }}
+            />
+          </div>
+        </label>
       </div>
       <div>
-        <label htmlFor="quantity">Quantity</label>
-        <div className="mt-1">
-          <input
-            type="number"
-            id="quantity"
-            className="w-full rounded border border-gray-500 px-2 py-1"
-            value={product ? product.quantity : 0}
-            name="quantity"
-            onChange={(e) =>
-              setProduct({ ...product!, quantity: e.target.valueAsNumber })
-            }
-          />
-        </div>
+        <label htmlFor="quantity">
+          Quantity
+          <div className="mt-1">
+            <input
+              type="number"
+              id="quantity"
+              className="w-full rounded border bg-slate-400 px-2 py-1 text-black"
+              value={product ? product.quantity : 0}
+              name="quantity"
+              onChange={(e) => (product!.quantity = e.target.valueAsNumber)}
+            />
+          </div>
+        </label>
       </div>
       <div>
-        <label htmlFor="price">Price</label>
-        <div className="mt-1">
-          <input
-            type="number"
-            id="price"
-            className="w-full rounded border border-gray-500 px-2 py-1"
-            value={product ? product.price : 0}
-            name="price"
-            onChange={(e) =>
-              setProduct({ ...product!, price: e.target.valueAsNumber })
-            }
-          />
-        </div>
+        <label htmlFor="price">
+          Price
+          <div className="mt-1">
+            <input
+              type="number"
+              id="price"
+              className="w-full rounded border bg-slate-400 px-2 py-1 text-black"
+              value={product ? product.price : 0}
+              name="price"
+              onChange={(e) => (product!.price = e.target.valueAsNumber)}
+            />
+          </div>
+        </label>
       </div>
       <div className="flex justify-center">
         <div>
           <button
             onClick={(e) => {
-              if(isAdded) isAdded(true)
-              setState("")
+              if (isAdded) isAdded(true);
+              setState("");
               addToStock(addToStockk(stock, product!));
-              
+              setProduct(Object.create({}))
             }}
-            className="rounded bg-stone-800 py-2 px-4 text-white hover:bg-stone-700 focus:bg-stone-700"
+            className="rounded bg-red-500 py-2 px-4 text-white hover:bg-red-600 focus:bg-red-400"
           >
             Create Product
           </button>
@@ -158,7 +161,7 @@ export function ProductComponent(prop: {
         <div className="mt-1">
           <select
             id="products"
-            className="w-full rounded border border-gray-500 px-2 py-1"
+            className="w-full rounded border bg-slate-400 px-2 py-1"
             onChange={(e) => {
               const value = e.target.value;
               const index = e.target.selectedIndex - 1;
@@ -188,7 +191,7 @@ export function ProductComponent(prop: {
           <div>
             <input
               type="number"
-              className="w-full rounded border border-gray-500 px-2 py-1"
+              className="w-full rounded border bg-slate-400 px-2 py-1"
               value={state.quantity}
               onChange={(e) => {
                 setState({ ...state, quantity: e.target.valueAsNumber });
@@ -199,7 +202,7 @@ export function ProductComponent(prop: {
             <div>
               <input
                 type="number"
-                className="w-full rounded border border-gray-500 px-2 py-1"
+                className="w-full rounded border bg-slate-400 px-2 py-1"
                 value={state.price}
                 onChange={(e) => {
                   setState({ ...state, price: e.target.valueAsNumber });
@@ -269,14 +272,15 @@ export const SelectProduct = (prop: {
   const { setState, setProduct, products, message } = prop;
   return (
     <select
-      className="w-full rounded border border-gray-500 px-2 py-1 "
+      className="w-full rounded border bg-slate-400 px-2 py-1"
       id="prod"
       name="prod"
       onChange={async (e) => {
         if (e.target.value === "create") {
           setState("new");
+          setProduct(Object.create({}))
         } else {
-          setState("update")
+          setState("update");
           const selected = JSON.parse(e.target.value) as Product;
           setProduct(selected);
         }
@@ -299,29 +303,27 @@ export const ProductComp = (prop: {
 }) => {
   const { products } = prop;
   return (
-    <div className="lg:flex lg:justify-center">
-      <table className="lg:w-4/5">
-        <thead>
-          <tr>
-            <th className="p-1">Product Name</th>
-            <th className="p-1">Quantity</th>
-            <th className="p-1">Price</th>
-            <th className="p-1">Value</th>
+    <table>
+      <thead>
+        <tr>
+          <th className="p-1">Product Name</th>
+          <th className="p-1">Quantity</th>
+          <th className="p-1">Price</th>
+          <th className="p-1">Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        {products.map((product, i) => (
+          <tr key={i}>
+            <td className="p-1 text-center capitalize">{product.name}</td>
+            <td className="p-1 text-center">{product.quantity}</td>
+            <td className="p-1 text-center">{product.price}</td>
+            <td className="p-1 text-center">
+              {product.price * product.quantity}
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          {products.map((product, i) => (
-            <tr key={i} >
-              <td className="p-1 text-center capitalize">{product.name}</td>
-              <td className="p-1 text-center">{product.quantity}</td>
-              <td className="p-1 text-center">{product.price}</td>
-              <td className="p-1 text-center">
-                {product.price * product.quantity}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+        ))}
+      </tbody>
+    </table>
   );
 };

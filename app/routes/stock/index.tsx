@@ -13,26 +13,29 @@ export const loader: LoaderFunction = async () => {
 export default function Index() {
   const stocks = useLoaderData<(Stock & { products: Product[] })[]>();
   return (
-    <div className="p-2">
-      <div className="mt-3 mb-5 flex justify-center text-base text-blue-800 lg:justify-end">
-        <div className="flex space-x-3">
+    <div className="space-y-5 p-2">
+      <div className="flex justify-center space-x-3 text-blue-300 md:justify-end">
+        <div>
           <Link to="/stock/create" className="hover:underline">
             Take Daily Stock
           </Link>
+        </div>
+        <div>
           <Link to="/stock/update" className="hover:underline">
             Update Daily Stock
           </Link>
         </div>
       </div>
-      <div className="space-y-4">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
         {stocks.map((stock, i) => (
-          <div key={i} className="lg:flex lg:justify-center">
-            <div className="lg:w-4/5 border p-2">
-              <h2 className="flex justify-center text-2xl font-bold">
-                {stock.date}
-              </h2>
-              <ProductComp products={stock.products} />
-            </div>
+          <div
+            key={i}
+            className="border flex flex-col justify-center bg-slate-700 opacity-70 shadow-md shadow-slate-200"
+          >
+            <h2 className="flex justify-center text-2xl font-bold">
+              {stock.date}
+            </h2>
+            <ProductComp products={stock.products} />
           </div>
         ))}
       </div>

@@ -17,11 +17,16 @@ export default function Index() {
     Customer & { order: (Order & { orderedProducts: OrderedProduct[] })[] }
   >();
   return (
-    <div id="print" className="border lg:w-4/5 p-2 space-y-4">
+    <div
+      id="print"
+      className="m-2 space-y-3 border bg-slate-700 p-3 opacity-70 shadow-lg shadow-slate-200 md:mx-auto md:my-5 md:w-4/5 md:max-w-2xl lg:w-3/5"
+    >
+      <h3 className="2xl flex justify-center font-semibold">{customer.name}</h3>
       <div className="flex justify-center">
-        <h3 className="2xl font-semibold">{customer.name}</h3>
+        <ProductComp
+          products={customer.order.map((cust) => cust.orderedProducts).flat()}
+        />
       </div>
-      <ProductComp products={(customer.order.map(cust => cust.orderedProducts).flat())} />
     </div>
   );
 }

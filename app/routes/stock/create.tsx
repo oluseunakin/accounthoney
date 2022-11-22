@@ -49,61 +49,75 @@ export default function StockHome() {
   const [product, setProduct] = useState<Product>();
 
   return (
-    <div className="p-3 lg:flex lg:justify-center">
-      <div className="space-y-4 lg:w-2/5">
-        <div>
-          <Link to="/stock/" className="text-blue-700 hover:underline">
-            Back
-          </Link>
-          <h1 className="flex justify-center text-2xl">
-            Create Stock for Today
-          </h1>
-        </div>
-        {state === "new" ? (
-          <NewProduct
-            isAdded={() => undefined}
-            stock={prod}
-            addToStock={addToStock}
-            setProduct={setProduct}
-            product={product}
-            setState={setState}
-          />
-        ) : (
-          <Form method="post" ref={f} className="space-y-4">
-            <div className="space-y-2">
-              <div>
-                <label htmlFor="prod">Select or Create a new Product</label>
-                <div className="mt-1">
-                  <SelectProduct
-                    message="Create a New Product"
-                    setState={setState}
-                    product={product}
-                    setProduct={setProduct}
-                    products={products}
-                  />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="quantity" className="text-base">
-                  Enter quantity
-                </label>
-                <div className="mt-1">
-                  <input
-                    className="w-full rounded border border-gray-500 px-2 py-1"
-                    type="number"
-                    name="quantity"
-                    id="quantity"
-                    value={product ? product.quantity : 0}
-                    onChange={(e) =>
-                      setProduct({
-                        ...product!,
-                        quantity: e.target.valueAsNumber,
-                      })
-                    }
-                  />
-                </div>
-              </div>
+    <div className="m-2 space-y-3 border bg-slate-700 p-3 opacity-70 shadow-lg shadow-slate-200 md:mx-auto md:my-5 md:w-4/5 md:max-w-2xl lg:w-3/5">
+      <div>
+        <Link to="/stock/" className="text-blue-300 hover:underline">
+          Back
+        </Link>
+        <h1 className="flex justify-center text-2xl">Create Stock for Today</h1>
+      </div>
+      {state === "new" ? (
+        <NewProduct
+          setProduct={setProduct}
+          isAdded={() => undefined}
+          stock={prod}
+          addToStock={addToStock}
+          product={product}
+          setState={setState}
+        />
+      ) : (
+        <Form method="post" ref={f} className="space-y-4">
+          <div className="space-y-2">
+            <div className="mt-1">
+              <label htmlFor="prod">
+                Select or Create a new Product
+                <SelectProduct
+                  message="Create a New Product"
+                  setState={setState}
+                  product={product}
+                  setProduct={setProduct}
+                  products={products}
+                />
+              </label>
             </div>
+            {product && Object.keys(product).length != 0 && (
+              <div>
+                <div className="mt-1">
+                  <label>
+                    Category
+                    <input
+                      value={product.categoryName}
+                      className="w-full rounded border bg-slate-400 px-2 py-1 text-black"
+                      onChange={(e) => {
+                        setProduct({
+                          ...product,
+                          categoryName: e.target.value,
+                        });
+                      }}
+                    />
+                  </label>
+                </div>
+
+                <div className="mt-1">
+                  <label htmlFor="quantity">
+                    Enter quantity
+                    <input
+                      className="w-full rounded border bg-slate-400 px-2 py-1 text-black"
+                      type="number"
+                      name="quantity"
+                      id="quantity"
+                      value={product ? product.quantity : 0}
+                      onChange={(e) =>
+                        setProduct({
+                          ...product!,
+                          quantity: e.target.valueAsNumber,
+                        })
+                      }
+                    />
+                  </label>
+                </div>
+              </div>
+            )}
             <div className="space-y-2">
               <div>
                 <button
@@ -116,39 +130,45 @@ export default function StockHome() {
                 >
                   Add to Stock
                 </button>
-                {prod.length !== 0 && (
-                  <div>
-                    {prod!.map((p, i) => (
-                      <div key={i} className="space-y-1 ">
-                        <p className="flex justify-center">{p.name}</p>
-                        <ProductComp products={p.products} />
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
-              <div className="grid justify-items-center ">
-                <button
-                  className="w-full rounded bg-red-500 py-2 px-4 text-white hover:bg-red-400 focus:bg-red-600"
-                  type="submit"
-                  onClick={(e) => {
-                    const formdata = new FormData();
-                    if (prod) {
-                      const products = prod.map((p) => p.products).flat();
-                      formdata.set("prod", JSON.stringify(products));
-                    }
-                    submit(formdata, { method: "post" });
-                    e.preventDefault();
-                  }}
-                >
-                  Create Stock
-                </button>
-              </div>
+              {prod.length !== 0 && (
+                <div>
+                  {prod!.map((p, i) => (
+                    <div
+                      key={i}
+                      className="flex flex-col justify-center space-y-1"
+                    >
+                      <p className="flex justify-center text-lg uppercase">
+                        {p.name}
+                      </p>
+                      <ProductComp products={p.products} />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
+            <div className="grid justify-items-center ">
+              <button
+                className="w-full rounded bg-red-500 py-2 px-4 text-white hover:bg-red-400 focus:bg-red-600"
+                type="submit"
+                onClick={(e) => {
+                  const formdata = new FormData();
+                  if (prod) {
+                    const products = prod.map((p) => p.products).flat();
+                    formdata.set("prod", JSON.stringify(products));
+                  }
+                  submit(formdata, { method: "post" });
+                  e.preventDefault();
+                }}
+              >
+                Create Stock
+              </button>
+            </div>
+
             {error && <div className="text-base text-red-400">{error}</div>}
-          </Form>
-        )}
-      </div>
+          </div>
+        </Form>
+      )}
     </div>
   );
 }

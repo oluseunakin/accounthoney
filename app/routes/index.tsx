@@ -61,54 +61,48 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Index() {
   const context = useContext(Context);
   const { sorted, stock, user } = useLoaderData<LoaderData>();
-  const search = useNavigate()
+  const search = useNavigate();
   useEffect(() => {
-    context.getUser(JSON.stringify(user));
     context.getSorted(JSON.stringify(sorted));
     context.getStock(JSON.stringify(stock));
+    context.getUser(JSON.stringify(user))
   }, []);
   return (
     <div className="space-y-7">
-      {user?.type === "admin" && (
-        <div className="flex justify-center lg:justify-end">
-          <div className="space-y-3 lg:flex lg:space-x-4 lg:space-y-0">
-            <div className="flex space-x-5 text-blue-800 justify-center">
-              <div>
-                <Link to="/stock" className="hover:underline">
-                  Stock
-                </Link>
-              </div>
-              <div>
-                <Link to="/audit" className="hover:underline">
-                  Audit
-                </Link>
-              </div>
-              <div>
-                <Link to="/customer" className="hover:underline">
-                  Customers
-                </Link>
-              </div>
-            </div>
-            <div>
-              <input
-                placeholder="Search for Customer"
-                type="search"
-                className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
-                onKeyDown={(e) => {
-                  if (e.key == "Enter") {
-                    const name = e.currentTarget.value;
-                    const to = `/customer/${name}`
-                    search(to)
-                  }
-                }}
-              />
-            </div>
+      <div className="flex flex-wrap justify-center space-x-3 md:justify-end">
+        <div className="flex space-x-3 text-blue-300">
+          <div>
+            <Link to="/stock" className="hover:underline">
+              Stock
+            </Link>
+          </div>
+          <div>
+            <Link to="/audit" className="hover:underline">
+              Audit
+            </Link>
+          </div>
+          <div>
+            <Link to="/customer" className="hover:underline">
+              Customers
+            </Link>
           </div>
         </div>
-      )}
-      <div className="lg:flex lg:justify-center p-2">
-        <StockComp />
+        <div>
+          <input
+            placeholder="Search for Customer"
+            type="search"
+            className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+            onKeyDown={(e) => {
+              if (e.key == "Enter") {
+                const name = e.currentTarget.value;
+                const to = `/customer/${name}`;
+                search(to);
+              }
+            }}
+          />
+        </div>
       </div>
+      <StockComp />
     </div>
   );
 }

@@ -65,102 +65,100 @@ export default function LoginPage() {
   }, [actionData]);
 
   return (
-    <div className="lg:flex lg:justify-center">
-      <Form method="post" className="space-y-6 lg:w-2/5">
-        <div>
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Name
-          </label>
-          <div className="mt-1">
-            <input
-              ref={nameRef}
-              id="name"
-              autoFocus={true}
-              name="name"
-              aria-invalid={actionData?.errors?.name ? true : undefined}
-              aria-describedby="name-error"
-              className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
-            />
-            {actionData?.errors?.name && (
-              <div className="pt-1 text-red-700" id="name-error">
-                {actionData.errors.name}
-              </div>
-            )}
-          </div>
+    <Form method="post" className="space-y-3 border bg-slate-700 opacity-70 shadow-lg shadow-slate-200 md:mx-auto p-3 lg:w-3/5 md:w-4/5 md:max-w-2xl m-2 md:my-5">
+      <div>
+        <label
+          htmlFor="name"
+          className="block text-sm font-medium"
+        >
+          Name
+        </label>
+        <div className="mt-1">
+          <input
+            ref={nameRef}
+            id="name"
+            autoFocus={true}
+            name="name"
+            aria-invalid={actionData?.errors?.name ? true : undefined}
+            aria-describedby="name-error"
+            className="w-full rounded px-2 py-1 text-lg"
+          />
+          {actionData?.errors?.name && (
+            <div className="pt-1 text-red-700" id="name-error">
+              {actionData.errors.name}
+            </div>
+          )}
         </div>
+      </div>
 
-        <div>
+      <div>
+        <label
+          htmlFor="password"
+          className="block text-sm font-medium"
+        >
+          Password
+        </label>
+        <div className="mt-1">
+          <input
+            id="password"
+            ref={passwordRef}
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            aria-invalid={actionData?.errors?.password ? true : undefined}
+            aria-describedby="password-error"
+            className="w-full rounded border px-2 py-1 text-lg text-black"
+          />
+          {actionData?.errors?.password && (
+            <div className="pt-1 text-red-700" id="password-error">
+              {actionData.errors.password}
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="flex justify-center space-x-4">
+        <button
+          type="submit"
+          name="guest"
+          className="rounded bg-red-500  py-2 px-4 text-white hover:bg-red-600 focus:bg-red-400"
+        >
+          Sign in as a Guest
+        </button>
+        <button
+          type="submit"
+          className="rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+        >
+          Log in
+        </button>
+      </div>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center">
+          <input
+            id="remember"
+            name="remember"
+            type="checkbox"
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+          />
           <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
+            htmlFor="remember"
+            className="ml-2 block text-sm"
           >
-            Password
+            Remember me
           </label>
-          <div className="mt-1">
-            <input
-              id="password"
-              ref={passwordRef}
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              aria-invalid={actionData?.errors?.password ? true : undefined}
-              aria-describedby="password-error"
-              className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
-            />
-            {actionData?.errors?.password && (
-              <div className="pt-1 text-red-700" id="password-error">
-                {actionData.errors.password}
-              </div>
-            )}
-          </div>
         </div>
-        <div className="space-x-4 flex justify-center">
-          <button
-            type="submit"
-            name="guest"
-            className="rounded bg-red-500  py-2 px-4 text-white hover:bg-red-600 focus:bg-red-400"
+        <div className="text-center text-sm">
+          Don't have an account?{" "}
+          <Link
+            className="text-blue-300 underline"
+            to={{
+              pathname: "/join",
+              search: searchParams.toString(),
+            }}
           >
-            Sign in as a Guest
-          </button>
-          <button
-            type="submit"
-            className="rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
-          >
-            Log in
-          </button>
+            Sign up
+          </Link>
         </div>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <input
-              id="remember"
-              name="remember"
-              type="checkbox"
-              className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-            />
-            <label
-              htmlFor="remember"
-              className="ml-2 block text-sm text-gray-900"
-            >
-              Remember me
-            </label>
-          </div>
-          <div className="text-center text-sm text-gray-500">
-            Don't have an account?{" "}
-            <Link
-              className="text-blue-500 underline"
-              to={{
-                pathname: "/join",
-                search: searchParams.toString(),
-              }}
-            >
-              Sign up
-            </Link>
-          </div>
-        </div>
-      </Form>
-    </div>
+      </div>
+    </Form>
   );
 }

@@ -20,8 +20,6 @@ export default function Index() {
       })[]
     >();
   return (
-    <div className="lg:w-4/5">
-      <CustomerComp customers={customers} />
-    </div>
+    <CustomerComp customers={customers} />
   );
 }

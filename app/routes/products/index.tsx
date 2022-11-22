@@ -13,7 +13,7 @@ export const loader: LoaderFunction = async () => {
 export default function Index() {
   const allProducts = useLoaderData<Product[]>();
   return (
-    <div className="border p-2 lg:w-4/5">
+    <div className="space-y-3 flex justify-center border bg-slate-700 opacity-70 shadow-lg shadow-slate-200 md:mx-auto p-3 lg:w-3/5 md:w-4/5 md:max-w-2xl m-2 md:my-5">
       <ProductComp products={allProducts} />
     </div>
   );

@@ -48,12 +48,12 @@ export default function Index() {
   let render;
   if (!user)
     render = (
-      <div className="lg:flex lg:justify-center space-x-3">
-        <Link to="/join" className="text-blue-800 hover:underline">
+      <div className="space-x-3 lg:flex lg:justify-center">
+        <Link to="/join" className="text-blue-300 hover:underline">
           Sign Up
         </Link>{" "}
         or{" "}
-        <Link to="/login" className="text-blue-800 hover:underline">
+        <Link to="/login" className="text-blue-300 hover:underline">
           Login
         </Link>{" "}
         first
@@ -61,77 +61,76 @@ export default function Index() {
     );
   else if (stock)
     render = (
-      <div className="lg:flex lg:justify-center">
-        <div className="space-y-4 lg:w-2/5">
-          <div className="flex justify-center">
-            <h1 className="text-2xl">Make your order</h1>
-          </div>
-          <div className="space-y-2">
-            {user?.type !== "customer" && (
-              <div>
-                <label htmlFor="name">Name of buyer</label>
-                <div className="mt-1">
-                  <input
-                    className="w-full rounded border border-gray-500 px-2 py-1 "
-                    id="name"
-                    onBlur={async (e) => {
-                      setName(e.target.value);
-                    }}
-                    defaultValue={name}
-                  />
-                </div>
-              </div>
-            )}
-            <ProductComponent
-              products={stock?.products!}
-              addToCart={addToCart}
-              cart={cart}
-              setError={setError}
-            />
-            {error && <p className="text-red-700">{error}</p>}
-            {cart.length !== 0 && <ProductComp products={cart} />}
-            <div className="mt-5">
-              <button
-                className="w-full rounded bg-red-500 py-2 px-4 text-white hover:bg-red-400 focus:bg-red-600"
-                disabled={Boolean(error)}
-                onClick={(e) => {
-                  isOrderMade(true);
-                }}
-              >
-                Create Order
-              </button>
+      <div className="m-2 space-y-3 border bg-slate-700 p-3 opacity-70 shadow-lg shadow-slate-200 md:mx-auto md:my-5 md:w-4/5 md:max-w-2xl lg:w-3/5">
+        <h1 className="flex justify-center text-2xl">Make your order</h1>
+        <div className="space-y-2">
+          {user?.type !== "customer" && (
+            <div className="mt-1">
+              <label htmlFor="name">
+                Name of buyer
+                <input
+                  className="w-full rounded border bg-slate-400 px-2 py-1 text-black"
+                  id="name"
+                  onBlur={async (e) => {
+                    setName(e.target.value);
+                  }}
+                  defaultValue={name}
+                />
+              </label>
             </div>
+          )}
+          <ProductComponent
+            products={stock?.products!}
+            addToCart={addToCart}
+            cart={cart}
+            setError={setError}
+          />
+          {error && <p className="text-red-700">{error}</p>}
+          {cart.length !== 0 && (
+            <div className="flex justify-center">
+              <ProductComp products={cart} />
+            </div>
+          )}
+          <div className="mt-5">
+            <button
+              className="w-full rounded bg-red-500 py-2 px-4 text-white hover:bg-red-400 focus:bg-red-600"
+              disabled={Boolean(error)}
+              onClick={(e) => {
+                isOrderMade(true);
+              }}
+            >
+              Create Order
+            </button>
           </div>
         </div>
       </div>
     );
-  else render = <div className="lg:flex lg:justify-center">No products in Stock</div>;
+  else
+    render = (
+      <div className="lg:flex lg:justify-center">No products in Stock</div>
+    );
   if (orderMade)
     render = (
-      <div className="lg:flex lg:justify-center">
-        <div className="space-y-4 lg:w-3/5">
-          <div className="flex justify-center font-bold">
-            <div>Confirm Order</div>
-          </div>
-          <ProductComp products={cart} />
-          <p className="p-4">Total: {total}</p>
-          <div className="p-3">
-            <button
-              onClick={(e) => {
-                const formdata = new FormData();
-                let userId = user?.name;
-                if (cart.length !== 0) {
-                  formdata.set("cart", JSON.stringify(cart));
-                  if (name !== "") userId = name;
-                  formdata.set("userId", userId!);
-                }
-                submit(formdata, { method: "post" });
-              }}
-              className="w-full rounded bg-red-500 py-2 px-4 text-white hover:bg-red-400 focus:bg-red-600"
-            >
-              Confirm
-            </button>
-          </div>
+      <div className="m-2 space-y-3 border bg-slate-700 p-3 opacity-70 shadow-lg shadow-slate-200 md:mx-auto md:my-5 md:w-4/5 md:max-w-2xl lg:w-3/5">
+        <h1 className="flex justify-center font-bold">Confirm Order</h1>
+        <div className="flex justify-center"><ProductComp products={cart} /></div>
+        <p className="p-4">Total: {total}</p>
+        <div className="p-3">
+          <button
+            onClick={(e) => {
+              const formdata = new FormData();
+              let userId = user?.name;
+              if (cart.length !== 0) {
+                formdata.set("cart", JSON.stringify(cart));
+                if (name !== "") userId = name;
+                formdata.set("userId", userId!);
+              }
+              submit(formdata, { method: "post" });
+            }}
+            className="w-full rounded bg-red-500 py-2 px-4 text-white hover:bg-red-400 focus:bg-red-600"
+          >
+            Confirm
+          </button>
         </div>
       </div>
     );

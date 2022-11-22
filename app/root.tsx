@@ -25,7 +25,7 @@ export function ErrorBoundary() {
         <Links />
       </head>
       <body>
-        <div className=" text-2xl font-semibold grid place-content-center h-full">
+        <div className=" grid h-full place-content-center text-2xl font-semibold">
           <div>An error has occured</div>
           <div>Reload this page</div>
         </div>
@@ -97,68 +97,62 @@ export default function App() {
   let userr: User | null = null;
   if (user.length != 0) userr = JSON.parse(user) as User;
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" className="md:h-full">
       <head>
         <Meta />
         <Links />
       </head>
       <Context.Provider value={state}>
-        <body className="h-full space-y-2 text-lg text-gray-700">
-          <div className="columns-1 space-y-1 p-3 lg:columns-2">
-            <div className="flex justify-center text-3xl font-bold text-blue-700 hover:underline ">
-              <div>
-                <Link to="/">HoneyHero Nigeria Limited</Link>
-              </div>
+        <body className="space-y-6 p-2 text-slate-50 bg-gradient-to-br from-slate-800 to-slate-500">
+          <div className="justify-around md:flex md:flex-wrap">
+            <div className="flex justify-center text-blue-300 hover:underline md:text-2xl lg:text-3xl">
+              <Link to="/">HoneyHero Nigeria Limited</Link>
             </div>
-            <div className="lg:flex lg:justify-end">
-              <div className="space-y-1 lg:flex lg:space-x-3 lg:space-y-0">
-                <div className="flex justify-center font-semibold">
-                  <div>Welcome {userr === null ? "Guest" : userr!.name}</div>
-                </div>
-                <div className="flex justify-center space-x-3">
-                  {userr && (
-                    <div>
-                      <Link
-                        to="/logout"
-                        className="text-blue-800 hover:underline"
-                        onClick={(e) => {
-                          context.data = { user: "", sorted: "", stock: "" };
-                          setState({
-                            ...state,
-                            data: { user: "", stock: "", sorted: "" },
-                          });
-                        }}
-                      >
-                        Logout
-                      </Link>
-                    </div>
-                  )}
-                  <div>{convertDate(new Date())}</div>
-                </div>
+            <div className="flex flex-wrap justify-center lg:justify-end space-x-2">
+              <div className="justify-center">
+                Welcome {userr === null ? "Guest" : userr!.name}
               </div>
+              {userr && (
+                <div>
+                  <Link
+                    to="/logout"
+                    className="text-blue-300 hover:underline"
+                    onClick={(e) => {
+                      context.getUser("");
+                      context.getSorted("");
+                      context.getStock("");
+                      setState({
+                        ...state,
+                        data: { user: "", stock: "", sorted: "" },
+                      });
+                    }}
+                  >
+                    Logout
+                  </Link>
+                </div>
+              )}
+              <div>{convertDate(new Date())}</div>
             </div>
           </div>
-          <div className="p-3 lg:flex">
-            <div className="flex justify-center lg:flex-none ">
-              <div className="space-y-2 text-blue-800">
-                <div className="flex justify-center">
-                  <Link to="/order" className="hover:underline">
-                    Order
-                  </Link>
-                </div>
-                <div className="flex justify-center">
-                  <Link to="/products" className="hover:underline">
-                    Products
-                  </Link>
-                </div>
-                <div className="flex justify-center">
-                  <Link to="/about" className="hover:underline">
-                    About
-                  </Link>
-                </div>
+          <div className="md:flex md:space-x-3 space-y-3 md:space-y-0">
+            <div className="flex md:h-max justify-center space-x-3 text-blue-300 md:flex-col md:space-y-5 md:space-x-0">
+              <div className="">
+                <Link to="/order" className="hover:underline">
+                  Order
+                </Link>
+              </div>
+              <div className="">
+                <Link to="/products" className="hover:underline">
+                  Products
+                </Link>
+              </div>
+              <div className="">
+                <Link to="/about" className="hover:underline">
+                  About
+                </Link>
               </div>
             </div>
-            <div className="mt-7 flex-grow p-3">
+            <div className="flex-grow">
               <Outlet />
             </div>
           </div>

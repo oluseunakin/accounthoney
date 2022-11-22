@@ -7,7 +7,7 @@ export type { Product } from "@prisma/client"
 export async function createProduct(product: Product, stockId: number) {
     await prisma.product.create({
         data: {
-          name: product.name,
+          name: product.name ,
           category: {
             connectOrCreate: {
               where: {
