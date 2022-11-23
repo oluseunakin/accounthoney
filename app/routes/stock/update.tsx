@@ -92,7 +92,7 @@ export default function UpdateStock() {
                       <label htmlFor="quantity">New quantity</label>
                       <div className="mt-1">
                         <input
-                          className="w-full rounded border bg-slate-400 px-2 py-1 text-black"
+                          className="w-full rounded border bg-slate-400 p-2 text-black"
                           type="number"
                           name="quantity"
                           id="quantity"
