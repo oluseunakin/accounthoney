@@ -35,7 +35,7 @@ export const action: ActionFunction = async ({ request }) => {
     );
   }
 
-  const user = await createUser(name, password, "customer");
+  const user = await createUser(name, password, "admin");
 
   return createUserSession({
     request,

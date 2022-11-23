@@ -104,12 +104,12 @@ export default function App() {
       </head>
       <Context.Provider value={state}>
         <body className="space-y-6 p-2 text-slate-50 bg-gradient-to-br from-slate-800 to-slate-500">
-          <div className="justify-around md:flex md:flex-wrap">
-            <div className="flex justify-center text-blue-300 hover:underline md:text-2xl lg:text-3xl">
+          <div className="justify-around md:flex md:flex-wrap space-y-2">
+            <div className="flex justify-center text-blue-300 hover:underline text-2xl lg:text-3xl">
               <Link to="/">HoneyHero Nigeria Limited</Link>
             </div>
             <div className="flex flex-wrap justify-center lg:justify-end space-x-2">
-              <div className="justify-center">
+              <div className="justify-center capitalize">
                 Welcome {userr === null ? "Guest" : userr!.name}
               </div>
               {userr && (
