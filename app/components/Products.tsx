@@ -11,6 +11,7 @@ export type COrderedProduct = {
   permanent: boolean;
   price: number;
   value: number;
+  categoryName: string;
 };
 
 export function addToStockk(oldstock: PCategory[], product: Product) {
@@ -126,7 +127,6 @@ export function NewProduct(prop: {
               if (isAdded) isAdded(true);
               setState("");
               addToStock(addToStockk(stock, product!));
-              setProduct(Object.create({}))
             }}
             className="rounded bg-red-500 py-2 px-4 text-white hover:bg-red-600 focus:bg-red-400"
           >
@@ -153,6 +153,7 @@ export function ProductComponent(prop: {
     price: 0,
     name: "",
     quantity: 0,
+    categoryName: ""
   });
   return (
     <div className="space-y-4">
@@ -173,6 +174,7 @@ export function ProductComponent(prop: {
                   price: product.price,
                   name: product.name,
                   quantity: product.quantity,
+                  categoryName: product.categoryName
                 });
               }
             }}
@@ -249,6 +251,7 @@ export function ProductComponent(prop: {
                   permanent,
                   price: state.price,
                   value: state.price * state.quantity,
+                  categoryName: state.categoryName
                 },
               ]);
             }
@@ -307,6 +310,7 @@ export const ProductComp = (prop: {
       <thead>
         <tr>
           <th className="p-1">Product Name</th>
+          <th className="p-1">Category</th>
           <th className="p-1">Quantity</th>
           <th className="p-1">Price</th>
           <th className="p-1">Value</th>
@@ -316,6 +320,7 @@ export const ProductComp = (prop: {
         {products.map((product, i) => (
           <tr key={i}>
             <td className="p-1 text-center capitalize">{product.name}</td>
+            <td className="p-1 text-center capitalize">{product.categoryName}</td>
             <td className="p-1 text-center">{product.quantity}</td>
             <td className="p-1 text-center">{product.price}</td>
             <td className="p-1 text-center">

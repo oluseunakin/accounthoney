@@ -1,4 +1,5 @@
-import { getAllProductsByStockId, Product } from "./products.server";
+import type { Product } from "./products.server";
+import { getAllProductsByStockId } from "./products.server";
 import { getStockByDate, getStockByDateWithProducts } from "./stock.server";
 
 export async function totalStockQuantity(date: string) {
@@ -39,18 +40,22 @@ export async function totalStockValue(date: string) {
 
 export async function audit(openDate: string, closeDate: string) {
   const todayStock = await getStockByDateWithProducts(openDate);
-  const audit : Array<{"old" : Product, "new": Product}> = []
+  const audit: Array<{ old: Product; new: Product }> = [];
   if (todayStock) {
-    const tProducts = todayStock.products
+    const tProducts = todayStock.products;
     const yProducts = (await getStockByDateWithProducts(closeDate))?.products;
-    tProducts.forEach(tProduct => {
-        const find = yProducts?.find(yProduct => yProduct.name === tProduct.name)
-        if(find) audit.push({
-            "old" : find,
-            "new": tProduct,
-        }) 
-    })
-    return audit
+    tProducts.forEach((tProduct) => {
+      const find = yProducts?.find((yProduct) => {
+        const oldName = yProduct.name + yProduct.categoryName;
+        const newName = tProduct.name + tProduct.categoryName;
+        return oldName === newName;
+      });
+      if (find)
+        audit.push({
+          old: find,
+          new: tProduct,
+        });
+    });
+    return audit;
   }
-
 }

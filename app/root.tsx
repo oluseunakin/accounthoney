@@ -97,7 +97,7 @@ export default function App() {
   let userr: User | null = null;
   if (user.length != 0) userr = JSON.parse(user) as User;
   return (
-    <html lang="en" className="md:h-full">
+    <html lang="en" className="h-screen">
       <head>
         <Meta />
         <Links />
@@ -146,11 +146,11 @@ export default function App() {
                   Products
                 </Link>
               </div>
-              <div className="">
+              {/* <div className="">
                 <Link to="/about" className="hover:underline">
                   About
                 </Link>
-              </div>
+              </div> */}
             </div>
             <div className="flex-grow">
               <Outlet />

@@ -3,7 +3,7 @@ import type { ActionFunction } from "@remix-run/server-runtime";
 import { redirect } from "@remix-run/server-runtime";
 import { useContext, useRef, useState } from "react";
 import { NewProduct, ProductComp, SelectProduct } from "~/components/Products";
-import { Product } from "~/models/products.server";
+import type { Product } from "~/models/products.server";
 import type { Stock } from "~/models/stock.server";
 import { updateStock } from "~/models/stock.server";
 import { Context } from "~/root";
@@ -46,7 +46,7 @@ export default function UpdateStock() {
   };
 
   return (
-    <div className="m-2 space-y-3 border bg-slate-700 p-3 opacity-70 shadow-lg shadow-slate-200 md:my-5 md:mx-auto md:w-4/5 md:max-w-2xl lg:w-3/5">
+    <div className="mx-3 space-y-3 border bg-slate-700 p-3 opacity-70 shadow-lg shadow-slate-200 my-10 md:mx-auto md:w-4/5 md:max-w-2xl lg:w-3/5">
       <div>
         <Link to="/stock/" className="text-blue-300 hover:underline">
           Back

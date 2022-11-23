@@ -13,13 +13,12 @@ export const loader: LoaderFunction = async () => {
 };
 
 export default function Index() {
-  const customers =
-    useLoaderData<
-      (Customer & {
-        order: (Order & { orderedProducts: OrderedProduct[] })[];
-      })[]
-    >();
-  return (
-    <CustomerComp customers={customers} />
-  );
+  const customers = useLoaderData<
+    (Customer & {
+      order: (Order & {
+        orderedProducts: OrderedProduct[];
+      })[];
+    })[]
+  >();
+  return <CustomerComp customers={customers} />;
 }

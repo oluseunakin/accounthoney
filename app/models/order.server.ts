@@ -16,7 +16,7 @@ const transformOrder = (orders: COrderedProduct[]) => {
     name: order.name,
     price: order.price,
     quantity: order.quantity,
-    value: order.value
+    categoryName: order.categoryName
   }));
 };
 
@@ -61,7 +61,7 @@ export const createOrder = async (orders: COrderedProduct[], buyer: string) => {
         },
         date: convertDate(new Date()),
       },
-    });
+    })
     return order.id
   } catch (e) {
     throw new Error();

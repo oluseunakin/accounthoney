@@ -1,7 +1,5 @@
 import { Outlet } from "@remix-run/react";
 
 export default function Audit() {
-  return (
-      <Outlet />
-  );
+  return <Outlet />;
 }

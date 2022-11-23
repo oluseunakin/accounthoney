@@ -13,7 +13,7 @@ export const loader: LoaderFunction = async ({ params }) => {
       <OrderComponent order={order!} />
     </div>
   );
-  sendEmail("sexyjenny955@gmail.com", ret);
+  //sendEmail("sexyjenny955@gmail.com", ret);
   return json(order);
 };
 

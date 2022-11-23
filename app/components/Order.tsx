@@ -9,10 +9,10 @@ export const OrderComponent = (prop: {
 }) => {
   const { order } = prop;
   return (
-    <div className="space-y-10 lg:w-3/5">
-      <div id="print" className="space-y-6">
-        <h1 className="mb-3 text-2xl font-semibold">{order.customerName}</h1>
-        <p>{order.date}</p>
+    <div className="mx-3 space-y-3 border bg-slate-700 p-3 opacity-70 shadow-lg shadow-slate-200 md:mx-auto my-5 md:w-4/5 md:max-w-2xl lg:w-3/5">
+      <div id="print" className="flex justify-center flex-col">
+        <h1 className="mb-3 text-2xl font-semibold flex justify-center">{order.customerName}</h1>
+        <p className="mb-6 flex justify-center">{order.date}</p>
         <ProductComp products={order.orderedProducts} />
       </div>
       <div className="flex justify-end px-3">

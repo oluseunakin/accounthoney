@@ -48,37 +48,35 @@ export default function Index() {
   let render;
   if (!user)
     render = (
-      <div className="space-x-3 lg:flex lg:justify-center">
+      <div className="mt-5 flex justify-center space-x-3">
         <Link to="/join" className="text-blue-300 hover:underline">
           Sign Up
-        </Link>{" "}
-        or{" "}
+        </Link>
+        <span>or</span>
         <Link to="/login" className="text-blue-300 hover:underline">
           Login
-        </Link>{" "}
-        first
+        </Link>
+        <span>first</span>
       </div>
     );
   else if (stock)
     render = (
-      <div className="m-2 space-y-3 border bg-slate-700 p-3 opacity-70 shadow-lg shadow-slate-200 md:mx-auto md:my-5 md:w-4/5 md:max-w-2xl lg:w-3/5">
+      <div className="mx-3 my-10 space-y-3 border bg-slate-700 p-3 opacity-70 shadow-lg shadow-slate-200 md:mx-auto md:w-4/5 md:max-w-2xl lg:w-3/5">
         <h1 className="flex justify-center text-2xl">Make your order</h1>
         <div className="space-y-2">
-          {user?.type !== "customer" && (
-            <div className="mt-1">
-              <label htmlFor="name">
-                Name of buyer
-                <input
-                  className="w-full rounded border bg-slate-400 px-2 py-1 text-black"
-                  id="name"
-                  onBlur={async (e) => {
-                    setName(e.target.value);
-                  }}
-                  defaultValue={name}
-                />
-              </label>
-            </div>
-          )}
+          <div className="mt-1">
+            <label htmlFor="name">
+              Name of buyer
+              <input
+                className="w-full rounded border bg-slate-400 px-2 py-1 text-black"
+                id="name"
+                onBlur={async (e) => {
+                  setName(e.target.value);
+                }}
+                defaultValue={name}
+              />
+            </label>
+          </div>
           <ProductComponent
             products={stock?.products!}
             addToCart={addToCart}
@@ -105,15 +103,14 @@ export default function Index() {
         </div>
       </div>
     );
-  else
-    render = (
-      <div className="lg:flex lg:justify-center">No products in Stock</div>
-    );
+  else render = <div className="flex justify-center">No products in Stock</div>;
   if (orderMade)
     render = (
-      <div className="m-2 space-y-3 border bg-slate-700 p-3 opacity-70 shadow-lg shadow-slate-200 md:mx-auto md:my-5 md:w-4/5 md:max-w-2xl lg:w-3/5">
+      <div className="mx-3 my-5 space-y-3 border bg-slate-700 p-3 opacity-70 shadow-lg shadow-slate-200 md:mx-auto md:w-4/5 md:max-w-2xl lg:w-3/5">
         <h1 className="flex justify-center font-bold">Confirm Order</h1>
-        <div className="flex justify-center"><ProductComp products={cart} /></div>
+        <div className="flex justify-center">
+          <ProductComp products={cart} />
+        </div>
         <p className="p-4">Total: {total}</p>
         <div className="p-3">
           <button

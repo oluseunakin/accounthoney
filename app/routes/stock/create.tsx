@@ -49,7 +49,7 @@ export default function StockHome() {
   const [product, setProduct] = useState<Product>();
 
   return (
-    <div className="m-2 space-y-3 border bg-slate-700 p-3 opacity-70 shadow-lg shadow-slate-200 md:mx-auto md:my-5 md:w-4/5 md:max-w-2xl lg:w-3/5">
+    <div className="mx-3 my-10 space-y-3 border bg-slate-700 p-3 opacity-70 shadow-lg shadow-slate-200 md:mx-auto md:w-4/5 md:max-w-2xl lg:w-3/5">
       <div>
         <Link to="/stock/" className="text-blue-300 hover:underline">
           Back
@@ -97,7 +97,6 @@ export default function StockHome() {
                     />
                   </label>
                 </div>
-
                 <div className="mt-1">
                   <label htmlFor="quantity">
                     Enter quantity
@@ -113,6 +112,22 @@ export default function StockHome() {
                           quantity: e.target.valueAsNumber,
                         })
                       }
+                    />
+                  </label>
+                </div>
+                <div className="mt-1">
+                  <label>
+                    Price
+                    <input
+                      type="number"
+                      value={product.price}
+                      className="w-full rounded border bg-slate-400 px-2 py-1 text-black"
+                      onChange={(e) => {
+                        setProduct({
+                          ...product,
+                          price: e.target.valueAsNumber,
+                        });
+                      }}
                     />
                   </label>
                 </div>
@@ -164,7 +179,6 @@ export default function StockHome() {
                 Create Stock
               </button>
             </div>
-
             {error && <div className="text-base text-red-400">{error}</div>}
           </div>
         </Form>

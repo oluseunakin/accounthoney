@@ -1,17 +1,14 @@
-import { Product } from "@prisma/client";
-import { json, LoaderFunction } from "@remix-run/node";
+import type { Product } from "@prisma/client";
+import type { LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { audit } from "~/models/audit.server";
 import { convertDate, getYesterday } from "~/utils";
 
 export const loader: LoaderFunction = async ({ params }) => {
-  const today = new Date();
-  const openDate = convertDate(today);
-  let closeDate: string = "";
-  const slug = params.slug;
-  let end: number;
-  const yesterday = getYesterday(today.getTime());
-  const auditt = await audit(openDate, convertDate(new Date(yesterday)));
+  const today = convertDate(new Date());
+  const yesterday = getYesterday(new Date().getTime());
+  const auditt = await audit(today, convertDate(new Date(yesterday)));
   return json({ auditt });
 };
 
@@ -20,15 +17,16 @@ export default function Index() {
     auditt: { old: Product; new: Product }[] | undefined;
   }>();
   return (
-    <div className="space-y-6 border bg-slate-700 p-3 opacity-70 shadow-lg shadow-slate-200 md:mx-auto md:mt-6 md:w-4/5 md:max-w-2xl lg:w-3/5">
+    <div className="space-y-6 border bg-slate-700 p-3 opacity-70 shadow-lg mx my-5 shadow-slate-200 md:mx-auto md:mt-6 md:w-4/5 md:max-w-2xl lg:w-3/5">
       <h2 className="flex justify-center text-2xl">
         Take Audit of your business
       </h2>
       {auditt && auditt?.length != 0 ? (
-        <table className="flex justify-center">
+        <table>
           <thead>
             <tr>
               <th>Product</th>
+              <th>Category</th>
               <th>Yesterday's Quantity</th>
               <th>Today's Quantity</th>
               <th>Yesterday's Price</th>
@@ -39,7 +37,8 @@ export default function Index() {
           <tbody>
             {auditt.map((a, i) => (
               <tr key={i}>
-                <th>{a.new.name}</th>
+                <th className="capitalize">{a.new.name}</th>
+                <th className="capitalize">{a.new.categoryName}</th>
                 <th>{a.old.quantity}</th>
                 <th>{a.new.quantity}</th>
                 <th>{a.old.price}</th>

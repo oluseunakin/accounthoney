@@ -84,7 +84,7 @@ export default function Join() {
             name="name"
             aria-invalid={actionData?.errors?.name ? true : undefined}
             aria-describedby="name-error"
-            className="w-full rounded border px-2 py-1 text-lg"
+            className="w-full rounded border px-2 py-1 text-lg text-black bg-slate-400"
           />
           {actionData?.errors?.name && (
             <div className="pt-1 text-red-700" id="name-error">
@@ -109,7 +109,7 @@ export default function Join() {
             autoComplete="new-password"
             aria-invalid={actionData?.errors?.password ? true : undefined}
             aria-describedby="password-error"
-            className="w-full rounded border px-2 py-1 text-lg"
+            className="w-full rounded border px-2 py-1 text-lg text-black bg-slate-400"
           />
           {actionData?.errors?.password && (
             <div className="pt-1 text-red-700" id="password-error">

@@ -5,15 +5,20 @@ import { ProductComp } from "./Products";
 
 export function CustomerComp(prop: {
   customers: (Customer & {
-    order: (Order & { orderedProducts: OrderedProduct[] })[];
+    order: (Order & {
+      orderedProducts: OrderedProduct[];
+    })[];
   })[];
 }) {
   const { customers } = prop;
   return (
     <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
       {customers.map((customer, i) => (
-        <div key={i} className="border bg-slate-700 p-3 opacity-70 shadow-md shadow-slate-200">
-          <h1 className="flex justify-center capitalize font-semibold 2xl">
+        <div
+          key={i}
+          className="border bg-slate-700 p-3 opacity-70 shadow-md shadow-slate-200"
+        >
+          <h1 className="2xl flex justify-center font-semibold capitalize">
             {customer.name}
           </h1>
           {customer.order.map((order, i) => (
@@ -23,7 +28,7 @@ export function CustomerComp(prop: {
           ))}
         </div>
       ))}
-      <div className="lg:col-span-3 md:col-span-2 flex justify-end self-end">
+      <div className="flex justify-end self-end md:col-span-2 lg:col-span-3">
         <button
           className="rounded bg-red-500 py-2 px-4 text-white hover:bg-red-400 focus:bg-red-600"
           type="button"
