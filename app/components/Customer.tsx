@@ -12,7 +12,7 @@ export function CustomerComp(prop: {
 }) {
   const { customers } = prop;
   return (
-    <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
       {customers.map((customer, i) => (
         <div
           key={i}
@@ -21,11 +21,13 @@ export function CustomerComp(prop: {
           <h1 className="2xl flex justify-center font-semibold capitalize">
             {customer.name}
           </h1>
+          <div className="space-y-3">
           {customer.order.map((order, i) => (
-            <div key={i}>
+            <div key={i} className="space-y-2">
               <ProductComp products={order.orderedProducts} />
+              <div className="font-bold text-lg text-red-500">on {order.date}</div>
             </div>
-          ))}
+          ))}</div>
         </div>
       ))}
       <div className="flex justify-end self-end md:col-span-2 lg:col-span-3">

@@ -12,9 +12,11 @@ export const loader: LoaderFunction = async () => {
 
 export default function Index() {
   const allProducts = useLoaderData<Product[]>();
-  return (
-    <div className="space-y-3 flex justify-center border bg-slate-700 opacity-70 shadow-lg shadow-slate-200 md:mx-auto p-3 lg:w-3/5 md:w-4/5 md:max-w-2xl m-2 md:my-5">
+  return allProducts.length != 0 ? (
+    <div className="m-2 flex justify-center space-y-3 border bg-slate-700 p-3 opacity-70 shadow-lg shadow-slate-200 md:mx-auto md:my-5 md:w-4/5 md:max-w-2xl lg:w-3/5">
       <ProductComp products={allProducts} />
     </div>
+  ) : (
+    ""
   );
 }

@@ -5,9 +5,9 @@ CREATE TABLE "Product" (
     "quantity" INTEGER NOT NULL,
     "price" INTEGER NOT NULL DEFAULT 0,
     "categoryName" TEXT NOT NULL,
-    "stockId" INTEGER NOT NULL,
+    "stockId" INTEGER,
     CONSTRAINT "Product_categoryName_fkey" FOREIGN KEY ("categoryName") REFERENCES "Category" ("name") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Product_stockId_fkey" FOREIGN KEY ("stockId") REFERENCES "Stock" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Product_stockId_fkey" FOREIGN KEY ("stockId") REFERENCES "Stock" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateTable

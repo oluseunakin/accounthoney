@@ -2,7 +2,7 @@ import type { LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { getUser } from "~/session.server";
 import { Link, useCatch, useLoaderData, useNavigate } from "@remix-run/react";
-import { getStockForTheDay } from "~/models/stock.server";
+import { createStock, getStockForTheDay } from "~/models/stock.server";
 import { fileProducts } from "~/utils";
 import type { Category } from "~/models/category.server";
 import { getCategory } from "~/models/category.server";
@@ -10,6 +10,7 @@ import type { Product } from "~/models/products.server";
 import { useContext, useEffect } from "react";
 import { StockComp } from "~/components/Stock";
 import { Context } from "~/root";
+import { getAllOrders } from "~/models/order.server";
 
 export type LoaderData = {
   user?: Awaited<ReturnType<typeof getUser>>;

@@ -36,8 +36,9 @@ export default function UpdateStock() {
   const [prod, oldStock] = useState<Product[]>([]);
   const [ns, newStock] = useState<Product[]>([]);
   const [added, isAdded] = useState(false);
-  const [state, setState] = useState("");
-  const [product, setProduct] = useState<Product>(() => Object.create({}));
+  const [neww, isNew] = useState(false);
+  const [update, setUpdate] = useState(false);
+  const [product, setProduct] = useState<Product>(Object.create({}));
   const [nprod, addToStock] = useState<PCategory[]>([]);
 
   const getProducts = (products: PCategory[] | Product) => {
@@ -46,21 +47,22 @@ export default function UpdateStock() {
   };
 
   return (
-    <div className="mx-3 space-y-3 border bg-slate-700 p-3 opacity-70 shadow-lg shadow-slate-200 my-10 md:mx-auto md:w-4/5 md:max-w-2xl lg:w-3/5">
+    <div className="mx-3 my-10 space-y-3 border bg-slate-700 p-3 opacity-70 shadow-lg shadow-slate-200 md:mx-auto md:w-4/5 md:max-w-2xl lg:w-3/5">
       <div>
         <Link to="/stock/" className="text-blue-300 hover:underline">
           Back
         </Link>
         <h1 className="flex justify-center text-2xl">Update Stock</h1>
       </div>
-      {state === "new" ? (
+      {neww ? (
         <NewProduct
-          setProduct={setProduct}
           isAdded={undefined}
           stock={nprod}
           addToStock={addToStock}
           product={product}
-          setState={setState}
+          setUpdate={setUpdate}
+          isNew={isNew}
+          setProduct={setProduct}
         />
       ) : (
         <Form method="post" ref={f} className="space-y-4">
@@ -70,14 +72,19 @@ export default function UpdateStock() {
               <div className="mt-1">
                 <SelectProduct
                   message="Add a New Product"
-                  setState={setState}
+                  isNew={isNew}
                   product={product}
                   setProduct={setProduct}
                   products={stock.products}
                 />
               </div>
             </label>
-            {Object.keys(product).length !== 0 && (
+            {update && (
+              <div className="flex justify-center">
+                <ProductComp products={getProducts(product)} />
+              </div>
+            )}
+            {product && !update && Object.keys(product).length != 0 && (
               <div>
                 <div className="flex justify-center">
                   {(nprod.length != 0 || product) && nprod.length != 0 ? (
@@ -86,44 +93,42 @@ export default function UpdateStock() {
                     <ProductComp products={getProducts(product)} />
                   )}
                 </div>
-                {state === "update" && (
-                  <>
-                    <div>
-                      <label htmlFor="quantity">New quantity</label>
-                      <div className="mt-1">
-                        <input
-                          className="w-full rounded border bg-slate-400 p-2 text-black"
-                          type="number"
-                          name="quantity"
-                          id="quantity"
-                          value={newQuantity}
-                          onChange={(e) => {
-                            const quantity = e.target.valueAsNumber;
-                            setNewQuantity(quantity);
-                            setProduct({ ...product!, quantity });
-                          }}
-                        />
-                      </div>
+                <>
+                  <div>
+                    <label htmlFor="quantity">New quantity</label>
+                    <div className="mt-1">
+                      <input
+                        className="w-full rounded border bg-slate-400 p-2 text-black"
+                        type="number"
+                        name="quantity"
+                        id="quantity"
+                        value={newQuantity}
+                        onChange={(e) => {
+                          const quantity = e.target.valueAsNumber;
+                          setNewQuantity(quantity);
+                          setProduct({ ...product!, quantity });
+                        }}
+                      />
                     </div>
-                    <div>
-                      <label htmlFor="price">New Price</label>
-                      <div className="mt-1">
-                        <input
-                          className="w-full rounded border bg-slate-400 px-2 py-1 text-black "
-                          type="number"
-                          name="price"
-                          id="price"
-                          value={newPrice}
-                          onChange={(e) => {
-                            const price = e.target.valueAsNumber;
-                            setNewPrice(price);
-                            setProduct({ ...product!, price });
-                          }}
-                        />
-                      </div>
+                  </div>
+                  <div>
+                    <label htmlFor="price">New Price</label>
+                    <div className="mt-1">
+                      <input
+                        className="w-full rounded border bg-slate-400 px-2 py-1 text-black "
+                        type="number"
+                        name="price"
+                        id="price"
+                        value={newPrice}
+                        onChange={(e) => {
+                          const price = e.target.valueAsNumber;
+                          setNewPrice(price);
+                          setProduct({ ...product!, price });
+                        }}
+                      />
                     </div>
-                  </>
-                )}
+                  </div>
+                </>
               </div>
             )}
           </div>
@@ -134,9 +139,9 @@ export default function UpdateStock() {
               onClick={(e) => {
                 if (nprod.length > 0) {
                   const products = getProducts(nprod);
-                  setState("");
                   newStock(products);
                 } else oldStock([...prod, product!]);
+                setUpdate(false);
                 isAdded(true);
                 addToStock([]);
                 setProduct(Object.create({}));

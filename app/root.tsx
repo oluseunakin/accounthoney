@@ -157,6 +157,7 @@ export default function App() {
             </div>
           </div>
           <ScrollRestoration />
+          <script src="https://kit.fontawesome.com/084c19ceda.js" crossOrigin="anonymous"></script>
           <Scripts />
           <LiveReload />
         </body>

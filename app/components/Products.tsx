@@ -1,5 +1,5 @@
 import type { OrderedProduct, User } from "@prisma/client";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import type { Product } from "~/models/products.server";
 import { Context } from "~/root";
 import type { PCategory } from "~/routes";
@@ -46,14 +46,17 @@ export function addToStockk(oldstock: PCategory[], product: Product) {
 }
 
 export function NewProduct(prop: {
-  product: Product | undefined;
-  setState: (state: string) => void;
+  product: Product;
+  isNew: (neww: boolean) => void;
+  setProduct: (product: Product) => void;
   addToStock: (stock: PCategory[]) => void;
   stock: PCategory[];
   isAdded?: (added: boolean) => void;
-  setProduct: (product: Product) => void
+  setUpdate: ((update: boolean) => void) | undefined;
 }) {
-  const { product, addToStock, stock, setState, isAdded, setProduct } = prop;
+  const { product, addToStock, stock, isNew, isAdded, setProduct, setUpdate } =
+    prop;
+
   return (
     <div className="space-y-4">
       <div>
@@ -67,7 +70,7 @@ export function NewProduct(prop: {
               name="name"
               value={product ? product.name : ""}
               onChange={(e) => {
-                product!.name = e.target.value;
+                setProduct({ ...product, name: e.target.value });
               }}
             />
           </div>
@@ -84,7 +87,7 @@ export function NewProduct(prop: {
               value={product ? product.categoryName : ""}
               name="categoryName"
               onChange={(e) => {
-                product!.categoryName = e.target.value;
+                setProduct({ ...product, categoryName: e.target.value });
               }}
             />
           </div>
@@ -98,9 +101,11 @@ export function NewProduct(prop: {
               type="number"
               id="quantity"
               className="w-full rounded border bg-slate-400 px-2 py-1 text-black"
-              value={product ? product.quantity : 0}
+              value={product ? product.quantity : undefined}
               name="quantity"
-              onChange={(e) => (product!.quantity = e.target.valueAsNumber)}
+              onChange={(e) =>
+                setProduct({ ...product, quantity: e.target.valueAsNumber })
+              }
             />
           </div>
         </label>
@@ -113,9 +118,11 @@ export function NewProduct(prop: {
               type="number"
               id="price"
               className="w-full rounded border bg-slate-400 px-2 py-1 text-black"
-              value={product ? product.price : 0}
+              value={product ? product.price : undefined}
               name="price"
-              onChange={(e) => (product!.price = e.target.valueAsNumber)}
+              onChange={(e) =>
+                setProduct({ ...product, price: e.target.valueAsNumber })
+              }
             />
           </div>
         </label>
@@ -125,8 +132,10 @@ export function NewProduct(prop: {
           <button
             onClick={(e) => {
               if (isAdded) isAdded(true);
-              setState("");
-              addToStock(addToStockk(stock, product!));
+              isNew(false);
+              addToStock(addToStockk(stock, product));
+              if (!setUpdate) setProduct(Object.create({}));
+              else setUpdate(true);
             }}
             className="rounded bg-red-500 py-2 px-4 text-white hover:bg-red-600 focus:bg-red-400"
           >
@@ -144,19 +153,40 @@ export function ProductComponent(prop: {
   cart: COrderedProduct[];
   setError: (oldState: string) => void;
 }) {
+  const dialog = useRef<HTMLDialogElement | null>(null);
   const user = JSON.parse(useContext(Context).data.user) as User;
   const { products, cart, addToCart, setError } = prop;
   const [priceChanged, isPriceChanged] = useState(false);
+  const [permanent, setPermanent] = useState(false);
+  let p = useRef(0);
+  let oq = useRef(0);
   const [state, setState] = useState({
-    oldQuantity: -1,
     id: 0,
     price: 0,
     name: "",
     quantity: 0,
-    categoryName: ""
+    categoryName: "",
   });
   return (
     <div className="space-y-4">
+      <dialog ref={dialog} className=" bg-zinc-700 text-white backdrop-blur-lg">
+        <form method="dialog" className="space-y-3">
+          <p>Is this price change permanent or one-off?</p>
+          <div className="space-x-5">
+            <button
+              className="rounded border bg-red-500 p-3"
+              value="yes"
+              onClick={() => setPermanent(true)}
+            >
+              Yes
+            </button>
+            <button className="rounded border bg-gray-500 p-3" value="no">
+              No
+            </button>
+          </div>
+        </form>
+      </dialog>
+
       <div className="w-full">
         <label htmlFor="products">Choose product to buy</label>
         <div className="mt-1">
@@ -168,13 +198,14 @@ export function ProductComponent(prop: {
               const index = e.target.selectedIndex - 1;
               const product = products[index];
               if (value !== "choose") {
+                p.current = product.price;
+                oq.current = product.quantity;
                 setState({
-                  oldQuantity: product.quantity,
                   id: product.id,
                   price: product.price,
                   name: product.name,
                   quantity: product.quantity,
-                  categoryName: product.categoryName
+                  categoryName: product.categoryName,
                 });
               }
             }}
@@ -209,6 +240,10 @@ export function ProductComponent(prop: {
                 onChange={(e) => {
                   setState({ ...state, price: e.target.valueAsNumber });
                 }}
+                onBlur={() => {
+                  const d = dialog.current!;
+                  d.showModal();
+                }} 
               />
             </div>
           )}
@@ -232,15 +267,9 @@ export function ProductComponent(prop: {
         <button
           className="rounded bg-zinc-800 py-2 px-4 text-white hover:bg-zinc-600 focus:bg-zinc-900"
           onClick={(e) => {
-            if (state.quantity > state.oldQuantity)
+            if (state.quantity > oq.current)
               setError("We don't have up to that right now");
             else {
-              let permanent = false;
-              if (priceChanged) {
-                permanent = confirm(
-                  "Is this price change one-off or permanent?\n Press Ok if Permanent, Cancel if one-off"
-                );
-              }
               setError("");
               addToCart([
                 ...cart,
@@ -251,7 +280,7 @@ export function ProductComponent(prop: {
                   permanent,
                   price: state.price,
                   value: state.price * state.quantity,
-                  categoryName: state.categoryName
+                  categoryName: state.categoryName,
                 },
               ]);
             }
@@ -261,18 +290,23 @@ export function ProductComponent(prop: {
           Add to Order
         </button>
       </div>
+      {permanent && (
+        <p>
+          Price change is permanent from {p.current} to {state.price}
+        </p>
+      )}
     </div>
   );
 }
 
 export const SelectProduct = (prop: {
   product: Product | undefined;
-  setState: (state: string) => void;
+  isNew: (neww: boolean) => void;
   setProduct: (product: Product) => void;
   products: Product[] | undefined | null;
   message: string;
 }) => {
-  const { setState, setProduct, products, message } = prop;
+  const { isNew, setProduct, products, message } = prop;
   return (
     <select
       className="w-full rounded border bg-slate-400 px-2 py-1"
@@ -280,10 +314,9 @@ export const SelectProduct = (prop: {
       name="prod"
       onChange={async (e) => {
         if (e.target.value === "create") {
-          setState("new");
-          setProduct(Object.create({}))
+          isNew(true);
+          setProduct(Object.create({}));
         } else {
-          setState("update");
           const selected = JSON.parse(e.target.value) as Product;
           setProduct(selected);
         }
@@ -320,7 +353,9 @@ export const ProductComp = (prop: {
         {products.map((product, i) => (
           <tr key={i}>
             <td className="p-1 text-center capitalize">{product.name}</td>
-            <td className="p-1 text-center capitalize">{product.categoryName}</td>
+            <td className="p-1 text-center capitalize">
+              {product.categoryName}
+            </td>
             <td className="p-1 text-center">{product.quantity}</td>
             <td className="p-1 text-center">{product.price}</td>
             <td className="p-1 text-center">

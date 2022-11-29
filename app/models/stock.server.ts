@@ -1,5 +1,6 @@
 import { prisma } from "~/db.server";
-import { convertDate } from "~/utils";
+import { convertDate, getYesterday } from "~/utils";
+import { getAllOrders } from "./order.server";
 import type { Product } from "./products.server";
 import { createProduct } from "./products.server";
 
@@ -36,10 +37,21 @@ export const getStockId = async (date: string) => {
 };
 
 export const getStockForTheDay = async () => {
-  return await stockSchema.findUnique({
+  const getLastStock = await getAllStocks()
+  const yesterdayStock = await getStockByDateWithProducts(
+    convertDate(new Date(getYesterday(Date.now())))
+  );
+  const stock = await stockSchema.findUnique({
     where: { date: convertDate(new Date()) },
     include: { products: true },
   });
+  if(stock) return stock
+  if (yesterdayStock && yesterdayStock.products.length != 0) return yesterdayStock;
+  if(getLastStock) {
+    const length = getLastStock.length
+    const last = getLastStock[length-1]
+    if(last && last.products.length != 0) return last
+  }
 };
 
 export const updateStock = async (
@@ -60,7 +72,7 @@ export const updateStock = async (
   newProducts.forEach(async (product, i) => {
     await createProduct(product, stockId);
   });
-  return
+  return;
 };
 
 export const getAllStocks = async () => {
@@ -68,7 +80,10 @@ export const getAllStocks = async () => {
 };
 
 export const getStockByDate = async (date: string) => {
-  return await stockSchema.findUnique({ where: { date }, select: { id: true } });
+  return await stockSchema.findUnique({
+    where: { date },
+    select: { id: true },
+  });
 };
 
 export const getStockById = async (id: number) => {
@@ -101,6 +116,7 @@ export const createStock = async (products: Product[]) => {
       },
     });
   } catch (e) {
+    console.log(e);
     throw new Error("Failed to create stock");
   }
 };

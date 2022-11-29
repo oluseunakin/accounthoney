@@ -16,14 +16,14 @@ const transformOrder = (orders: COrderedProduct[]) => {
     name: order.name,
     price: order.price,
     quantity: order.quantity,
-    categoryName: order.categoryName
+    categoryName: order.categoryName,
   }));
 };
 
 export const createOrder = async (orders: COrderedProduct[], buyer: string) => {
-  const name = buyer.toUpperCase()
+  const name = buyer.toUpperCase();
   try {
-    const nam = Buffer.from(name, "ascii").toString()
+    const nam = Buffer.from(name, "ascii").toString();
     orders.forEach(async (order, i) => {
       const product = (await getProduct(order.id)) as Product;
       const remainingQuantity = product.quantity - order.quantity;
@@ -39,7 +39,7 @@ export const createOrder = async (orders: COrderedProduct[], buyer: string) => {
         customer: {
           connectOrCreate: {
             where: {
-              name: nam
+              name: nam,
             },
             create: {
               name,
@@ -48,21 +48,21 @@ export const createOrder = async (orders: COrderedProduct[], buyer: string) => {
                   where: {
                     name_password: {
                       name: nam,
-                      password: "guest"
-                    },               
-                  }, 
+                      password: "guest",
+                    },
+                  },
                   create: {
-                    name: nam
-                  }
-                }
-              }
+                    name: nam,
+                  },
+                },
+              },
             },
           },
         },
         date: convertDate(new Date()),
       },
-    })
-    return order.id
+    });
+    return order.id;
   } catch (e) {
     throw new Error();
   }
@@ -80,7 +80,11 @@ export const getOrderByIdWithOrders = async (id: number) => {
 };
 
 export const getOrderByADate = async (date: string) => {
-  return await orderSchema.findMany({ where: { date }, take: 20 });
+  return await orderSchema.findMany({
+    where: { date },
+    take: 20,
+    include: { orderedProducts: true },
+  });
 };
 
 export const getOrdersInAMonth = async (date: string) => {

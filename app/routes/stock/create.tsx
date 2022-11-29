@@ -44,10 +44,9 @@ export default function StockHome() {
   const actionData = useActionData<AuditResponse>();
   if (actionData) var { error } = actionData;
   const f = useRef() as any as Ref<HTMLFormElement>;
-  const [state, setState] = useState("");
+  const [neww, isNew] = useState(false);
   const [prod, addToStock] = useState<PCategory[]>([]);
-  const [product, setProduct] = useState<Product>();
-
+  const [product, setProduct] = useState<Product>(Object.create({}));
   return (
     <div className="mx-3 my-10 space-y-3 border bg-slate-700 p-3 opacity-70 shadow-lg shadow-slate-200 md:mx-auto md:w-4/5 md:max-w-2xl lg:w-3/5">
       <div>
@@ -56,14 +55,15 @@ export default function StockHome() {
         </Link>
         <h1 className="flex justify-center text-2xl">Create Stock for Today</h1>
       </div>
-      {state === "new" ? (
+      {neww ? (
         <NewProduct
-          setProduct={setProduct}
           isAdded={() => undefined}
           stock={prod}
           addToStock={addToStock}
           product={product}
-          setState={setState}
+          isNew={isNew}
+          setUpdate={undefined}
+          setProduct={setProduct}
         />
       ) : (
         <Form method="post" ref={f} className="space-y-4">
@@ -73,7 +73,7 @@ export default function StockHome() {
                 Select or Create a new Product
                 <SelectProduct
                   message="Create a New Product"
-                  setState={setState}
+                  isNew={isNew}
                   product={product}
                   setProduct={setProduct}
                   products={products}
@@ -140,6 +140,7 @@ export default function StockHome() {
                   type="button"
                   onClick={(e) => {
                     addToStock((oldstock) => addToStockk(oldstock, product!));
+                    setProduct(Object.create({}))
                     e.preventDefault();
                   }}
                 >

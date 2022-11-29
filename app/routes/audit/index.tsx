@@ -2,6 +2,9 @@ import type { Product } from "@prisma/client";
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import type { RefObject} from "react";
+import { useRef } from "react";
+import type { Mine } from "~/models/audit.server";
 import { audit } from "~/models/audit.server";
 import { convertDate, getYesterday } from "~/utils";
 
@@ -13,16 +16,17 @@ export const loader: LoaderFunction = async ({ params }) => {
 };
 
 export default function Index() {
+
   const { auditt } = useLoaderData<{
-    auditt: { old: Product; new: Product }[] | undefined;
+    auditt: { old: Mine; new: Product }[] | undefined;
   }>();
   return (
-    <div className="space-y-6 border bg-slate-700 p-3 opacity-70 shadow-lg mx my-5 shadow-slate-200 md:mx-auto md:mt-6 md:w-4/5 md:max-w-2xl lg:w-3/5">
+    <div className="">
       <h2 className="flex justify-center text-2xl">
         Take Audit of your business
       </h2>
       {auditt && auditt?.length != 0 ? (
-        <table>
+        <table className="">
           <thead>
             <tr>
               <th>Product</th>
@@ -36,16 +40,16 @@ export default function Index() {
           </thead>
           <tbody>
             {auditt.map((a, i) => (
-              <tr key={i}>
-                <th className="capitalize">{a.new.name}</th>
-                <th className="capitalize">{a.new.categoryName}</th>
-                <th>{a.old.quantity}</th>
-                <th>{a.new.quantity}</th>
-                <th>{a.old.price}</th>
-                <th>{a.new.price}</th>
-                <th>
-                  {a.old.price * a.old.quantity - a.new.price * a.new.quantity}
-                </th>
+              <tr key={i}  className="">
+                <td className="capitalize text-center">{a.new.name}</td>
+                <td className="capitalize text-center">{a.new.categoryName}</td>
+                <td className="text-center" >{a.old.total + a.new.quantity}</td>
+                <td className="text-center" >{a.new.quantity}</td>
+                <td className="text-center">{a.old.price}</td>
+                <td className="text-center">{a.new.price}</td>
+                <td className="text-center">
+                  {a.old.price * (a.old.total + a.new.quantity) - a.new.price * a.new.quantity}
+                </td>
               </tr>
             ))}
           </tbody>
