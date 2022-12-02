@@ -169,7 +169,7 @@ export function ProductComponent(prop: {
   });
   return (
     <div className="space-y-4">
-      <dialog ref={dialog} className=" bg-zinc-700 text-white backdrop-blur-lg">
+      <dialog ref={dialog} className=" bg-zinc-700 text-white backdrop-contrast-100">
         <form method="dialog" className="space-y-3">
           <p>Is this price change permanent or one-off?</p>
           <div className="space-x-5">

@@ -6,12 +6,12 @@
   "sideEffects": false,
   "scripts": {
     "postinstall": "remix setup node",
-    "build": "run-s build:*",
+    "build": "npm-run-all -p build:*",
     "build:css": "npm run generate:css -- --minify",
-    "build:remix": "remix build",
-    "dev": "run-p dev:*",
+    "build:remix": "cross-env NODE_ENV=production remix build",
+    "dev": "npm-run-all -p dev:*",
     "dev:css": "npm run generate:css -- --watch",
-    "dev:remix": "cross-env NODE_ENV=development binode --require -- @remix-run/dev:remix ",
+    "dev:remix": "cross-env NODE_ENV=development remix dev",
     "format": "prettier --write .",
     "generate:css": "tailwindcss -o ./app/styles/tailwind.css",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
@@ -19,7 +19,9 @@
     "start": "remix-serve build",
     "start:mocks": "binode --require ./mocks -- @remix-run/serve:remix-serve build",
     "pretest:e2e:run": "npm run build",
-    "validate": "run-p \"test -- --run\" lint typecheck test:e2e:run"
+    "validate": "run-p \"test -- --run\" lint typecheck test:e2e:run",
+    "build:worker": "esbuild ./app/entry.worker.ts --outfile=./public/entry.worker.js --minify --bundle --format=esm --define:process.env.NODE_ENV='\"production\"'",
+    "dev:worker": "esbuild ./app/entry.worker.ts --outfile=./public/entry.worker.js --bundle --format=esm --define:process.env.NODE_ENV='\"development\"' --watch"
   },
   "prettier": {},
   "eslintIgnore": [
@@ -37,7 +39,12 @@
     "nodemailer": "^6.8.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "tiny-invariant": "^1.2.0"
+    "tiny-invariant": "^1.2.0",
+    "node-persist": "^3.1.0",
+    "web-push": "^3.4.5",
+    "npm-run-all": "^4.1.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^6.1.1",
@@ -75,7 +82,8 @@
     "typescript": "^4.6.3",
     "vite": "^2.9.1",
     "vite-tsconfig-paths": "^3.4.1",
-    "vitest": "^0.8.2"
+    "vitest": "^0.8.2",
+    "@types/node-persist": "^3.1.2"
   },
   "engines": {
     "node": ">=14"

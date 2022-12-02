@@ -2,7 +2,7 @@ import type { LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { getUser } from "~/session.server";
 import { Link, useCatch, useLoaderData, useNavigate } from "@remix-run/react";
-import { createStock, getStockForTheDay } from "~/models/stock.server";
+import { getStockForTheDay } from "~/models/stock.server";
 import { fileProducts } from "~/utils";
 import type { Category } from "~/models/category.server";
 import { getCategory } from "~/models/category.server";
@@ -10,7 +10,6 @@ import type { Product } from "~/models/products.server";
 import { useContext, useEffect } from "react";
 import { StockComp } from "~/components/Stock";
 import { Context } from "~/root";
-import { getAllOrders } from "~/models/order.server";
 
 export type LoaderData = {
   user?: Awaited<ReturnType<typeof getUser>>;
@@ -92,7 +91,7 @@ export default function Index() {
           <input
             placeholder="Search for Customer"
             type="search"
-            className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+            className="w-full rounded border text-black border-gray-500 px-2 py-1 text-lg"
             onKeyDown={(e) => {
               if (e.key == "Enter") {
                 const name = e.currentTarget.value;

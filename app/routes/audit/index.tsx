@@ -2,8 +2,6 @@ import type { Product } from "@prisma/client";
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import type { RefObject} from "react";
-import { useRef } from "react";
 import type { Mine } from "~/models/audit.server";
 import { audit } from "~/models/audit.server";
 import { convertDate, getYesterday } from "~/utils";
