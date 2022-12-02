@@ -12,8 +12,9 @@ import {
 import React, { useContext } from "react";
 import { useState } from "react";
 import type { User } from "./models/user.server";
-import tailwindStylesheetUrl from "./styles/tailwind.css";
 import mycss from "./styles/media.css";
+import tailwindStylesheetUrl from "app/styles/tailwind.css";
+
 import { convertDate } from "./utils";
 let isMount = true;
 export function ErrorBoundary() {
@@ -120,7 +121,9 @@ export default function App() {
   return (
     <html lang="en" className="h-screen">
       <head>
-        <Meta /> <Links />
+        <Meta /> 
+        <link rel="manifest" href="/resources/manifest.webmanifest" />
+        <Links />
       </head>
       <Context.Provider value={state}>
         <body className="space-y-6 bg-gradient-to-br from-slate-800 to-slate-500 p-2 text-slate-50">
