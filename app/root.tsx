@@ -13,7 +13,7 @@ import React, { useContext } from "react";
 import { useState } from "react";
 import type { User } from "./models/user.server";
 import mycss from "./styles/media.css";
-import tailwindStylesheetUrl from "app/styles/tailwind.css";
+import tailwindStylesheetUrl from "./styles/tailwind.css";
 
 import { convertDate } from "./utils";
 let isMount = true;
