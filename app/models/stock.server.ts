@@ -59,8 +59,8 @@ export const updateStock = async (
   oldProducts: Product[],
   stockId: number
 ) => {
-  oldProducts.forEach(async (product, i) => {
-    await prisma.product.update({
+  oldProducts.forEach((product, i) => {
+    prisma.product.update({
       where: { id: product.id },
       data: {
         quantity: product.quantity,
@@ -69,8 +69,8 @@ export const updateStock = async (
       },
     });
   });
-  newProducts.forEach(async (product, i) => {
-    await createProduct(product, stockId);
+  newProducts.forEach((product, i) => {
+    createProduct(product, stockId);
   });
   return;
 };
@@ -107,7 +107,7 @@ export const getStockByDateWithProducts = async (date: string) => {
 export const createStock = async (products: Product[]) => {
   const p = transformStock(products);
   try {
-    return await stockSchema.create({
+    return stockSchema.create({
       data: {
         products: {
           create: p,

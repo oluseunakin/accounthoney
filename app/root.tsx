@@ -119,14 +119,14 @@ export default function App() {
   let userr: User | null = null;
   if (user.length != 0) userr = JSON.parse(user) as User;
   return (
-    <html lang="en" className="h-screen">
+    <html lang="en">
       <head>
         <Meta /> 
         <link rel="manifest" href="/resources/manifest.webmanifest" />
         <Links />
       </head>
       <Context.Provider value={state}>
-        <body className="space-y-6 bg-gradient-to-br from-slate-800 to-slate-500 p-2 text-slate-50">
+        <body className="space-y-6 bg-gradient-to-br from-slate-800 to-slate-500 p-2 text-slate-50 bg-no-repeat">
           <div className="justify-around space-y-2 md:flex md:flex-wrap">
             <div className="flex justify-center text-2xl text-blue-300 hover:underline lg:text-3xl">
               <Link to="/">HoneyHero Nigeria Limited</Link>

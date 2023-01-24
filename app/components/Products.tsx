@@ -330,7 +330,7 @@ export const SelectProduct = (prop: {
             {product.name}
           </option>
         ))}
-    </select>
+      </select>
   );
 };
 

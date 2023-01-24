@@ -739,6 +739,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   --tw-gradient-to: #64748b;
 }
 
+.bg-no-repeat {
+  background-repeat: no-repeat;
+}
+
 .p-2 {
   padding: 0.5rem;
 }

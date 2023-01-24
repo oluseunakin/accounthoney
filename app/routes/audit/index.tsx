@@ -2,6 +2,7 @@ import type { Product } from "@prisma/client";
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import { useEffect } from "react";
 import type { Mine } from "~/models/audit.server";
 import { audit } from "~/models/audit.server";
 import { convertDate, getYesterday } from "~/utils";
@@ -37,19 +38,21 @@ export default function Index() {
             </tr>
           </thead>
           <tbody>
-            {auditt.map((a, i) => (
+            {auditt.map((a, i) => {
+              const op = a.old.price, np = a.new.price, ot = a.old.total, nt = a.new.quantity * a.new.price
+              return (
               <tr key={i}  className="">
                 <td className="capitalize text-center">{a.new.name}</td>
                 <td className="capitalize text-center">{a.new.categoryName}</td>
-                <td className="text-center" >{a.old.total + a.new.quantity}</td>
+                <td className="text-center" >{ot + a.new.quantity}</td>
                 <td className="text-center" >{a.new.quantity}</td>
-                <td className="text-center">{a.old.price}</td>
-                <td className="text-center">{a.new.price}</td>
+                <td className="text-center">{op}</td>
+                <td className="text-center">{np}</td>
                 <td className="text-center">
                   {a.old.price * (a.old.total + a.new.quantity) - a.new.price * a.new.quantity}
                 </td>
               </tr>
-            ))}
+            )})}
           </tbody>
         </table>
       ) : (
