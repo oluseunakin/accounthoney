@@ -58,8 +58,8 @@ export function ErrorBoundary() {
   return (
     <html>
       <head>
-        <title>Oh no!</title> 
-        <Meta /> 
+        <title>Oh no!</title>
+        <Meta />
         <link rel="manifest" href="/resources/manifest.webmanifest" />
         <Links />
       </head>
@@ -78,17 +78,20 @@ export const Context = React.createContext({
   getStock: (stock: string) => {},
   getSorted: (sorted: string) => {},
 });
+
 export const links: LinksFunction = () => {
   return [
     { rel: "stylesheet", href: tailwindStylesheetUrl },
     { rel: "stylesheet", href: mycss },
   ];
 };
+
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
   title: "Account and Audit",
   viewport: "width=device-width,initial-scale=1",
 });
+
 export default function App() {
   const getUser = (user: string) => {
     setState((oldState) => {
@@ -121,12 +124,12 @@ export default function App() {
   return (
     <html lang="en">
       <head>
-        <Meta /> 
+        <Meta />
         <link rel="manifest" href="/resources/manifest.webmanifest" />
         <Links />
       </head>
       <Context.Provider value={state}>
-        <body className="space-y-6 bg-gradient-to-br from-slate-800 to-slate-500 p-2 text-slate-50 bg-no-repeat">
+        <body className="space-y-6 bg-gradient-to-br from-slate-800 to-slate-500 bg-no-repeat p-2 text-slate-50">
           <div className="justify-around space-y-2 md:flex md:flex-wrap">
             <div className="flex justify-center text-2xl text-blue-300 hover:underline lg:text-3xl">
               <Link to="/">HoneyHero Nigeria Limited</Link>
